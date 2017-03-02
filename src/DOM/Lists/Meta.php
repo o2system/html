@@ -32,8 +32,10 @@ class Meta extends \ArrayIterator
 
     public function import ( Meta $metaNodes )
     {
-        foreach ( $metaNodes->getArrayCopy() as $name => $value ) {
-            $this->offsetSet( $name, $value );
+        if( is_array( $metaNodes = $metaNodes->getArrayCopy() ) ) {
+            foreach ( $metaNodes as $name => $value ) {
+                $this->offsetSet( $name, $value );
+            }
         }
 
         return $this;

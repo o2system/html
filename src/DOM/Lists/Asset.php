@@ -34,8 +34,10 @@ class Asset extends \ArrayIterator
 
     public function import ( Asset $assetNodes )
     {
-        foreach ( $assetNodes->getArrayCopy() as $name => $value ) {
-            $this->offsetSet( $name, $value );
+        if( is_array( $assetNodes = $assetNodes->getArrayCopy() ) ) {
+            foreach ( $assetNodes as $name => $value ) {
+                $this->offsetSet( $name, $value );
+            }
         }
 
         return $this;

@@ -218,7 +218,7 @@ class Element extends \DOMElement
     public function text ( $newTextContent = null )
     {
         if ( isset( $newTextContent ) ) {
-            $this->textContent = $newTextContent;
+            $this->textContent = $this->nodeValue = $newTextContent;
         }
 
         return $this->textContent;

@@ -32,6 +32,18 @@ class HTML extends Document
      */
     protected function loadHTMLTemplate ()
     {
-        parent::loadHTML( file_get_contents( __DIR__ . '/Template/HTML.html' ) );
+        $htmlTemplate = <<<HTML
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+    <title>O2System HTML</title>
+</head>
+<body>
+
+</body>
+</html>
+HTML;
+
+        parent::loadHTML( $htmlTemplate );
     }
 }

@@ -82,24 +82,23 @@ class Document extends \DOMDocument
      *
      * @return Document
      */
-    public function __construct ( $version = '1.0', $encoding = 'UTF-8' )
-    {
-        parent::__construct( $version, $encoding );
+    public function __construct($version = '1.0', $encoding = 'UTF-8') {
+        parent::__construct($version, $encoding);
 
-        $this->registerNodeClass( 'DOMElement', '\O2System\HTML\DOM\Element' );
-        $this->registerNodeClass( 'DOMAttr', '\O2System\HTML\DOM\Attr' );
+        $this->registerNodeClass('DOMElement', '\O2System\HTML\DOM\Element');
+        $this->registerNodeClass('DOMAttr', '\O2System\HTML\DOM\Attr');
 
         $this->formatOutput = true;
 
-        $this->metaNodes = new Meta( $this );
-        $this->metaOGPNodes = new OpenGraph( $this );
+        $this->metaNodes = new Meta($this);
+        $this->metaOGPNodes = new OpenGraph($this);
 
-        $this->linkNodes = new DOM\Lists\Asset( $this );
+        $this->linkNodes = new DOM\Lists\Asset($this);
         $this->linkNodes->element = 'link';
 
         $this->styleContent = new Style();
 
-        $this->scriptNodes = new DOM\Lists\Asset( $this );
+        $this->scriptNodes = new DOM\Lists\Asset($this);
         $this->scriptNodes->element = 'script';
 
         $this->scriptContent = new Script();
@@ -116,9 +115,20 @@ class Document extends \DOMDocument
      *
      * @return void
      */
-    protected function loadHTMLTemplate ()
-    {
-        parent::loadHTML( file_get_contents( __DIR__ . '/Template/HTML.html' ) );
+    protected function loadHTMLTemplate() {
+        $htmlTemplate = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>O2System HTML</title>
+</head>
+<body>
+</body>
+</html>
+HTML;
+
+        parent::loadHTML($htmlTemplate);
     }
 
     // ------------------------------------------------------------------------
@@ -130,12 +140,11 @@ class Document extends \DOMDocument
      *
      * @return mixed The value at the specified index or false.
      */
-    public function &__get ( $tagName )
-    {
+    public function &__get($tagName) {
         $getDocument[ $tagName ] = null;
 
-        if ( in_array( $tagName, [ 'html', 'head', 'body', 'title' ] ) ) {
-            $getDocument[ $tagName ] = $this->getElementsByTagName( $tagName )->item( 0 );
+        if (in_array($tagName, ['html', 'head', 'body', 'title'])) {
+            $getDocument[ $tagName ] = $this->getElementsByTagName($tagName)->item(0);
         }
 
         return $getDocument[ $tagName ];
@@ -157,21 +166,20 @@ class Document extends \DOMDocument
      * @return int the number of bytes written or false if an error occurred.
      * @since 5.0
      */
-    public function saveHTMLFile ( $filePath )
-    {
-        if ( ! is_string( $filePath ) ) {
-            throw new \InvalidArgumentException( 'The filename argument must be of type string' );
+    public function saveHTMLFile($filePath) {
+        if (!is_string($filePath)) {
+            throw new \InvalidArgumentException('The filename argument must be of type string');
         }
 
-        if ( ! is_writable( $filePath ) ) {
+        if (!is_writable($filePath)) {
             return false;
         }
 
         $result = $this->saveHTML();
-        file_put_contents( $filePath, $result );
-        $bytesWritten = filesize( $filePath );
+        file_put_contents($filePath, $result);
+        $bytesWritten = filesize($filePath);
 
-        if ( $bytesWritten === strlen( $result ) ) {
+        if ($bytesWritten === strlen($result)) {
             return $bytesWritten;
         }
 
@@ -192,58 +200,65 @@ class Document extends \DOMDocument
      * @return string the HTML, or false if an error occurred.
      * @since 5.0
      */
-    public function saveHTML ( \DOMNode $node = null )
-    {
-        $headElement = $this->getElementsByTagName( 'head' )->item( 0 );
+    public function saveHTML(\DOMNode $node = null) {
+        $headElement = $this->getElementsByTagName('head')->item(0);
 
-        $styleContent = trim( $this->styleContent->__toString() );
+        $styleContent = trim($this->styleContent->__toString());
 
-        if ( ! empty( $styleContent ) ) {
-            $styleElement = $this->createElement( 'style', $styleContent );
-            $styleElement->setAttribute( 'type', 'text/css' );
-            $headElement->appendChild( $styleElement );
+        if (!empty($styleContent)) {
+            $styleElement = $this->createElement('style', $styleContent);
+            $styleElement->setAttribute('type', 'text/css');
+            $headElement->appendChild($styleElement);
         }
 
-        $titleElement = $this->getElementsByTagName( 'title' )->item( 0 );
+        $titleElement = $this->getElementsByTagName('title')->item(0);
 
         // Insert Meta
-        foreach ( array_reverse( $this->metaNodes->getArrayCopy() ) as $metaNode ) {
-            $headElement->insertBefore( $this->importNode( $metaNode ), $titleElement );
+        if (is_array($metaNodes = $this->metaNodes->getArrayCopy())) {
+            foreach (array_reverse($metaNodes) as $metaNode) {
+                $headElement->insertBefore($this->importNode($metaNode), $titleElement);
+            }
         }
 
         // Insert Meta Open Graph Protocol
-        foreach ( $this->metaOGPNodes->getArrayCopy() as $metaOGPNode ) {
-            $headElement->appendChild( $this->importNode( $metaOGPNode ) );
+        if (is_array($metaOGPNodes = $this->metaOGPNodes->getArrayCopy())) {
+            foreach ($metaOGPNodes as $metaOGPNode) {
+                $headElement->appendChild($this->importNode($metaOGPNode));
+            }
         }
 
         // Insert Link
-        foreach ( $this->linkNodes as $linkNode ) {
-            $headElement->appendChild( $this->importNode( $linkNode ) );
+        if( count( $this->linkNodes ) ) {
+            foreach ($this->linkNodes as $linkNode) {
+                $headElement->appendChild($this->importNode($linkNode));
+            }
         }
 
-        $bodyElement = $this->getElementsByTagName( 'body' )->item( 0 );
+        $bodyElement = $this->getElementsByTagName('body')->item(0);
 
         // Insert Script
-        foreach ( $this->scriptNodes as $scriptNode ) {
-            $bodyElement->appendChild( $this->importNode( $scriptNode ) );
+        if ( count( $this->scriptNodes ) ) {
+            foreach ($this->scriptNodes as $scriptNode) {
+                $bodyElement->appendChild($this->importNode($scriptNode));
+            }
         }
 
-        $scriptContent = trim( $this->scriptContent->__toString() );
+        $scriptContent = trim($this->scriptContent->__toString());
 
-        if ( ! empty( $scriptContent ) ) {
-            $scriptElement = $this->createElement( 'script', $scriptContent );
-            $scriptElement->setAttribute( 'type', 'text/javascript' );
-            $bodyElement->appendChild( $scriptElement );
+        if (!empty($scriptContent)) {
+            $scriptElement = $this->createElement('script', $scriptContent);
+            $scriptElement->setAttribute('type', 'text/javascript');
+            $bodyElement->appendChild($scriptElement);
         }
 
-        $output = parent::saveHTML( $node );
+        $output = parent::saveHTML($node);
 
-        if ( $this->formatOutput === true ) {
+        if ($this->formatOutput === true) {
             $beautifier = new Beautifier();
-            $output = $beautifier->format( $output );
+            $output = $beautifier->format($output);
         }
 
-        return trim( $output );
+        return trim($output);
     }
 
     // ------------------------------------------------------------------------
@@ -257,14 +272,13 @@ class Document extends \DOMDocument
      *
      * @return Nodes
      */
-    public function find ( $expression )
-    {
-        $xpath = new XPath( $this );
+    public function find($expression) {
+        $xpath = new XPath($this);
 
-        $xpath->registerNamespace( "php", "http://php.net/xpath" );
+        $xpath->registerNamespace("php", "http://php.net/xpath");
         $xpath->registerPhpFunctions();
 
-        return $xpath->query( $expression );
+        return $xpath->query($expression);
     }
 
     // ------------------------------------------------------------------------
@@ -278,25 +292,24 @@ class Document extends \DOMDocument
      *
      * @return \DOMNode|\O2System\HTML\DOM\Element
      */
-    public function importSourceNode ( $source )
-    {
+    public function importSourceNode($source) {
         $DOMDocument = new self();
-        $DOMDocument->load( $source );
+        $DOMDocument->load($source);
 
-        $this->metaNodes->import( $DOMDocument->metaNodes );
-        $this->scriptNodes->import( $DOMDocument->scriptNodes );
-        $this->linkNodes->import( $DOMDocument->linkNodes );
-        $this->styleContent->import( $DOMDocument->styleContent );
-        $this->scriptContent->import( $DOMDocument->scriptContent );
+        $this->metaNodes->import($DOMDocument->metaNodes);
+        $this->scriptNodes->import($DOMDocument->scriptNodes);
+        $this->linkNodes->import($DOMDocument->linkNodes);
+        $this->styleContent->import($DOMDocument->styleContent);
+        $this->scriptContent->import($DOMDocument->scriptContent);
 
-        $bodyElement = $DOMDocument->getElementsByTagName( 'body' )->item( 0 );
+        $bodyElement = $DOMDocument->getElementsByTagName('body')->item(0);
 
-        if ( $bodyElement->firstChild instanceof Element ) {
+        if ($bodyElement->firstChild instanceof Element) {
             return $bodyElement->firstChild;
-        } elseif ( $bodyElement->firstChild instanceof \DOMText ) {
-            foreach ( $bodyElement->childNodes as $childNode ) {
-                if ( $childNode instanceof Element ) {
-                    return $childNode->cloneNode( true );
+        } elseif ($bodyElement->firstChild instanceof \DOMText) {
+            foreach ($bodyElement->childNodes as $childNode) {
+                if ($childNode instanceof Element) {
+                    return $childNode->cloneNode(true);
                     break;
                 }
             }
@@ -327,15 +340,14 @@ class Document extends \DOMDocument
      * warning.
      * @since 5.0
      */
-    public function load ( $filePath, $options = null )
-    {
-        if ( file_exists( $filePath ) ) {
-            return $this->loadHTMLFile( $filePath, $options );
-        } elseif ( is_string( $filePath ) ) {
-            return $this->loadHTML( $filePath, $options );
+    public function load($filePath, $options = null) {
+        if (file_exists($filePath)) {
+            return $this->loadHTMLFile($filePath, $options);
+        } elseif (is_string($filePath)) {
+            return $this->loadHTML($filePath, $options);
+        } elseif (!empty($filePath)) {
+            return parent::load($filePath, $options);
         }
-
-        return parent::load( $filePath, $options );
     }
 
     // ------------------------------------------------------------------------
@@ -361,9 +373,8 @@ class Document extends \DOMDocument
      * warning.
      * @since 5.0
      */
-    public function loadHTMLFile ( $filePath, $options = 0 )
-    {
-        return $this->loadHTML( file_get_contents( $filePath ), $options );
+    public function loadHTMLFile($filePath, $options = 0) {
+        return $this->loadHTML(file_get_contents($filePath), $options);
     }
 
     // ------------------------------------------------------------------------
@@ -388,42 +399,41 @@ class Document extends \DOMDocument
      * warning.
      * @since 5.0
      */
-    public function loadHTML ( $source, $options = 0 )
-    {
+    public function loadHTML($source, $options = 0) {
         // Enables libxml errors handling
         $internalErrorsOptionValue = libxml_use_internal_errors();
 
-        if ( $internalErrorsOptionValue === false ) {
-            libxml_use_internal_errors( true );
+        if ($internalErrorsOptionValue === false) {
+            libxml_use_internal_errors(true);
         }
 
-        $source = $this->parseHTML( $source );
+        $source = $this->parseHTML($source);
 
-        $bodyElement = $this->getElementsByTagName( 'body' )->item( 0 );
+        $bodyElement = $this->getElementsByTagName('body')->item(0);
 
         $DOMDocument = new \DOMDocument();
         $DOMDocument->formatOutput = true;
         $DOMDocument->preserveWhiteSpace = false;
 
-        if ( $this->encoding === 'UTF-8' ) {
-            if ( function_exists( 'mb_convert_encoding' ) ) {
-                $source = mb_convert_encoding( $source, 'HTML-ENTITIES', 'UTF-8' );
+        if ($this->encoding === 'UTF-8') {
+            if (function_exists('mb_convert_encoding')) {
+                $source = mb_convert_encoding($source, 'HTML-ENTITIES', 'UTF-8');
             } else {
-                $source = utf8_decode( $source );
+                $source = utf8_decode($source);
             }
 
             $DOMDocument->encoding = 'UTF-8';
         }
 
-        $DOMDocument->loadHTML( trim( $source ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+        $DOMDocument->loadHTML(trim($source), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-        if ( null !== ( $sourceBodyElement = $DOMDocument->getElementsByTagName( 'body' )->item( 0 ) ) ) {
-            foreach ( $sourceBodyElement->childNodes as $childNode ) {
-                $childNode = $this->importNode( $childNode, true );
-                $bodyElement->appendChild( $childNode );
+        if (null !== ($sourceBodyElement = $DOMDocument->getElementsByTagName('body')->item(0))) {
+            foreach ($sourceBodyElement->childNodes as $childNode) {
+                $childNode = $this->importNode($childNode, true);
+                $bodyElement->appendChild($childNode);
             }
-        } elseif ( $bodyChildNode = $this->importNode( $DOMDocument->firstChild, true ) ) {
-            $bodyElement->appendChild( $bodyChildNode );
+        } elseif ($bodyChildNode = $this->importNode($DOMDocument->firstChild, true)) {
+            $bodyElement->appendChild($bodyChildNode);
         }
     }
 
@@ -438,8 +448,7 @@ class Document extends \DOMDocument
      *
      * @return mixed
      */
-    private function parseHTML ( $source )
-    {
+    private function parseHTML($source) {
         // Has inline meta tags
         $pattern
             = '
@@ -460,28 +469,28 @@ class Document extends \DOMDocument
 		
 		  ~ix';
 
-        if ( preg_match_all( $pattern, $source, $matches ) ) {
-            $metaTags = array_combine( array_map( 'strtolower', $matches[1] ), $matches[2] );
+        if (preg_match_all($pattern, $source, $matches)) {
+            $metaTags = array_combine(array_map('strtolower', $matches[1]), $matches[2]);
 
-            foreach ( $metaTags as $name => $content ) {
-                $meta = $this->createElement( 'meta' );
-                $meta->setAttribute( $name, $content );
+            foreach ($metaTags as $name => $content) {
+                $meta = $this->createElement('meta');
+                $meta->setAttribute($name, $content);
                 $this->metaNodes[ $name ] = $meta;
             }
 
-            $source = preg_replace( '#<meta(.*?)>#is', '', $source );
+            $source = preg_replace('#<meta(.*?)>#is', '', $source);
         }
 
         // Has inline script Element
-        if ( preg_match_all( '/((<[\\s\\/]*script\\b[^>]*>)([^>]*)(<\\/script>))/', $source, $matches ) ) {
-            if ( isset( $matches[2] ) ) {
-                foreach ( $matches[2] as $match ) {
-                    if ( strpos( $match, 'src=' ) !== false ) {
-                        $scriptElement = $this->createElement( 'script' );
-                        $scriptXml = simplexml_load_string( str_replace( '>', '/>', $match ) );
+        if (preg_match_all('/((<[\\s\\/]*script\\b[^>]*>)([^>]*)(<\\/script>))/', $source, $matches)) {
+            if (isset($matches[2])) {
+                foreach ($matches[2] as $match) {
+                    if (strpos($match, 'src=') !== false) {
+                        $scriptElement = $this->createElement('script');
+                        $scriptXml = simplexml_load_string(str_replace('>', '/>', $match));
 
-                        foreach ( $scriptXml->attributes() as $name => $value ) {
-                            $scriptElement->setAttribute( $name, $value );
+                        foreach ($scriptXml->attributes() as $name => $value) {
+                            $scriptElement->setAttribute($name, $value);
                         }
 
                         $this->scriptNodes[] = $scriptElement;
@@ -489,25 +498,25 @@ class Document extends \DOMDocument
                 }
             }
 
-            if ( isset( $matches[3] ) ) {
-                foreach ( $matches[3] as $match ) {
-                    $this->scriptContent[] = trim( $match ) . PHP_EOL;
+            if (isset($matches[3])) {
+                foreach ($matches[3] as $match) {
+                    $this->scriptContent[] = trim($match) . PHP_EOL;
                 }
             }
 
-            $source = preg_replace( '#<script(.*?)>(.*?)</script>#is', '', $source );
+            $source = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $source);
         }
 
         // Has inline link Element
-        if ( preg_match_all( '#<link(.*?)>#is', $source, $matches ) ) {
-            if ( isset( $matches[0] ) ) {
-                foreach ( $matches[0] as $match ) {
-                    if ( strpos( $match, 'href=' ) !== false ) {
-                        $linkElement = $this->createElement( 'link' );
-                        $linkXml = simplexml_load_string( str_replace( '>', '/>', $match ) );
+        if (preg_match_all('#<link(.*?)>#is', $source, $matches)) {
+            if (isset($matches[0])) {
+                foreach ($matches[0] as $match) {
+                    if (strpos($match, 'href=') !== false) {
+                        $linkElement = $this->createElement('link');
+                        $linkXml = simplexml_load_string(str_replace('>', '/>', $match));
 
-                        foreach ( $linkXml->attributes() as $name => $value ) {
-                            $linkElement->setAttribute( $name, $value );
+                        foreach ($linkXml->attributes() as $name => $value) {
+                            $linkElement->setAttribute($name, $value);
                         }
 
                         $this->linkNodes[] = $linkElement;
@@ -515,25 +524,25 @@ class Document extends \DOMDocument
                 }
             }
 
-            $source = preg_replace( '#<link(.*?)>#is', '', $source );
+            $source = preg_replace('#<link(.*?)>#is', '', $source);
         }
 
         // Has inline style Element
-        if ( preg_match_all( '/((<[\\s\\/]*style\\b[^>]*>)([^>]*)(<\\/style>))/i', $source, $matches ) ) {
-            if ( isset( $matches[3] ) ) {
-                foreach ( $matches[3] as $match ) {
-                    $this->styleContent[] = trim( $match ) . PHP_EOL;
+        if (preg_match_all('/((<[\\s\\/]*style\\b[^>]*>)([^>]*)(<\\/style>))/i', $source, $matches)) {
+            if (isset($matches[3])) {
+                foreach ($matches[3] as $match) {
+                    $this->styleContent[] = trim($match) . PHP_EOL;
                 }
             }
 
-            $source = preg_replace( '#<style(.*?)>(.*?)</style>#is', '', $source );
+            $source = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $source);
         }
 
         // Remove html comments
-        $source = preg_replace( '/<!--(.|\s)*?-->/', '', $source );
+        $source = preg_replace('/<!--(.|\s)*?-->/', '', $source);
 
         // Remove blank lines
-        return preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $source );
+        return preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $source);
     }
 
     // ------------------------------------------------------------------------
@@ -545,8 +554,7 @@ class Document extends \DOMDocument
      *
      * @return string
      */
-    public function __toString ()
-    {
+    public function __toString() {
         return $this->saveHTML();
     }
 }
