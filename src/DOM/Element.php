@@ -32,7 +32,7 @@ class Element extends \DOMElement
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
-    public function __get ( $name )
+    public function __get( $name )
     {
         if ( ! is_string( $name ) ) {
             throw new \InvalidArgumentException( 'The name argument must be of type string' );
@@ -59,7 +59,7 @@ class Element extends \DOMElement
      *
      * @throws \InvalidArgumentException
      */
-    public function __set ( $name, $value )
+    public function __set( $name, $value )
     {
         if ( ! is_string( $name ) ) {
             throw new \InvalidArgumentException( 'The name argument must be of type string' );
@@ -102,7 +102,7 @@ class Element extends \DOMElement
      *
      * @return static
      */
-    public function addAttributes ( array $attr )
+    public function addAttributes( array $attr )
     {
         foreach ( $attr as $name => $value ) {
             $this->setAttribute( $name, $value );
@@ -118,10 +118,10 @@ class Element extends \DOMElement
      *
      * @return array An associative array containing all attributes
      */
-    public function getAttributes ()
+    public function getAttributes()
     {
         $attributesCount = $this->attributes->length;
-        $attributes = [ ];
+        $attributes = [];
 
         for ( $i = 0; $i < $attributesCount; $i++ ) {
             $attributes[] = $this->attributes->item( $i );
@@ -137,7 +137,7 @@ class Element extends \DOMElement
      *
      * @return \O2System\HTML\DOM\Element
      */
-    public function clones ()
+    public function clones()
     {
         return clone $this;
     }
@@ -149,7 +149,7 @@ class Element extends \DOMElement
      *
      * @return string The element outerHTML
      */
-    public function __toString ()
+    public function __toString()
     {
         return $this->outerHTML;
     }
@@ -161,7 +161,7 @@ class Element extends \DOMElement
      *
      * @return void
      */
-    public function clear ()
+    public function clear()
     {
         if ( $this->childNodes->length > 0 ) {
             foreach ( $this->childNodes as $childNode ) {
@@ -181,7 +181,7 @@ class Element extends \DOMElement
      *
      * @return string
      */
-    public function html ( $newInnerHTML = null )
+    public function html( $newInnerHTML = null )
     {
         if ( isset( $newInnerHTML ) ) {
             $this->replace( $newInnerHTML );
@@ -199,7 +199,7 @@ class Element extends \DOMElement
      *
      * @return \DOMNode
      */
-    public function replace ( $source )
+    public function replace( $source )
     {
         $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
 
@@ -215,7 +215,7 @@ class Element extends \DOMElement
      *
      * @return null
      */
-    public function text ( $newTextContent = null )
+    public function text( $newTextContent = null )
     {
         if ( isset( $newTextContent ) ) {
             $this->textContent = $this->nodeValue = $newTextContent;
@@ -233,7 +233,7 @@ class Element extends \DOMElement
      *
      * @return \DOMNode
      */
-    public function append ( $source )
+    public function append( $source )
     {
         $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
 
@@ -249,7 +249,7 @@ class Element extends \DOMElement
      *
      * @return \DOMNode
      */
-    public function prepend ( $source )
+    public function prepend( $source )
     {
         $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
 
@@ -265,7 +265,7 @@ class Element extends \DOMElement
      *
      * @return \DOMNode
      */
-    public function before ( $source )
+    public function before( $source )
     {
         $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
 
@@ -281,7 +281,7 @@ class Element extends \DOMElement
      *
      * @return bool
      */
-    public function after ( $source )
+    public function after( $source )
     {
         $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
 
@@ -307,7 +307,7 @@ class Element extends \DOMElement
      *
      * @return \DOMNode
      */
-    public function remove ()
+    public function remove()
     {
         return $this->parentNode->removeChild( $this );
     }

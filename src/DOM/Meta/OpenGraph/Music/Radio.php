@@ -31,7 +31,7 @@ class Radio extends Basic
      *
      * @param \O2System\HTML\Document $document
      */
-    public function __construct ( Document $document )
+    public function __construct( Document $document )
     {
         parent::__construct( $document );
 
@@ -47,7 +47,7 @@ class Radio extends Basic
      *
      * @return static
      */
-    public function setSiteName ( $name )
+    public function setSiteName( $name )
     {
         $this->setMetadata( 'site_name', $name );
 
@@ -63,7 +63,7 @@ class Radio extends Basic
      *
      * @return static
      */
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         if ( strpos( $url, 'http' ) !== false ) {
             parent::setMetadata( 'url', $url );
@@ -79,7 +79,7 @@ class Radio extends Basic
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Image
      */
-    public function createImage ()
+    public function createImage()
     {
         return new Image( $this->ownerDocument );
     }
@@ -91,7 +91,7 @@ class Radio extends Basic
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Audio
      */
-    public function createAudio ()
+    public function createAudio()
     {
         return new Audio( $this->ownerDocument );
     }

@@ -12,7 +12,7 @@
 
 namespace O2System\HTML\DOM\Meta\OpenGraph;
 
-    // ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 /**
  * Class Book
@@ -28,7 +28,7 @@ class Book extends Website
      *
      * @return static
      */
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         $this->url = rtrim( $url, '/' ) . '/ns/book#';
 
@@ -49,7 +49,7 @@ class Book extends Website
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Book
      */
-    public function setReleaseDate ( $datetime )
+    public function setReleaseDate( $datetime )
     {
         return $this->setMetadata( 'release_date', $datetime );
     }
@@ -64,7 +64,7 @@ class Book extends Website
      *
      * @return static
      */
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'book:' . $property, $content );
 
@@ -80,7 +80,7 @@ class Book extends Website
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Book
      */
-    public function setIsbn ( $isbn )
+    public function setIsbn( $isbn )
     {
         return $this->setMetadata( 'isbn', $isbn );
     }
@@ -94,7 +94,7 @@ class Book extends Website
      *
      * @return $this
      */
-    public function setTag ( $tag )
+    public function setTag( $tag )
     {
         $meta = $this->ownerDocument->createElement( 'meta' );
 
@@ -116,7 +116,7 @@ class Book extends Website
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Profile
      */
-    public function createAuthor ()
+    public function createAuthor()
     {
         return new Profile( $this->ownerDocument );
     }

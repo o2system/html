@@ -30,7 +30,7 @@ class Musician extends Profile
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Image
      */
-    public function createImage ()
+    public function createImage()
     {
         return new Image( $this->ownerDocument );
     }
@@ -42,7 +42,7 @@ class Musician extends Profile
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Audio
      */
-    public function createAudio ()
+    public function createAudio()
     {
         return new Audio( $this->ownerDocument );
     }

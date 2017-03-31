@@ -30,7 +30,7 @@ class XHTML extends Document
      *
      * @return void
      */
-    protected function loadHTMLTemplate ()
+    protected function loadHTMLTemplate()
     {
         $htmlTemplate = <<<HTML
 <?xml version="1.0" encoding="UTF-8"?>

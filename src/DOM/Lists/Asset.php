@@ -27,14 +27,14 @@ class Asset extends \ArrayIterator
 
     public $ownerDocument;
 
-    public function __construct ( Document $ownerDocument )
+    public function __construct( Document $ownerDocument )
     {
         $this->ownerDocument =& $ownerDocument;
     }
 
-    public function import ( Asset $assetNodes )
+    public function import( Asset $assetNodes )
     {
-        if( is_array( $assetNodes = $assetNodes->getArrayCopy() ) ) {
+        if ( is_array( $assetNodes = $assetNodes->getArrayCopy() ) ) {
             foreach ( $assetNodes as $name => $value ) {
                 $this->offsetSet( $name, $value );
             }
@@ -43,7 +43,7 @@ class Asset extends \ArrayIterator
         return $this;
     }
 
-    public function offsetSet ( $name, $value )
+    public function offsetSet( $name, $value )
     {
         if ( $value instanceof Element ) {
             parent::offsetSet( $name, $value );
@@ -55,7 +55,7 @@ class Asset extends \ArrayIterator
         }
     }
 
-    public function createElement ( $name, $value )
+    public function createElement( $name, $value )
     {
         $meta = $this->ownerDocument->createElement( $this->element );
         $meta->setAttribute( $name, $value );

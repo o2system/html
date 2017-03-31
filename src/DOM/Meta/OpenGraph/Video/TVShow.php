@@ -29,7 +29,7 @@ class TVShow extends Video
      *
      * @param \O2System\HTML\Document $document
      */
-    public function __construct ( Document $document )
+    public function __construct( Document $document )
     {
         parent::__construct( $document );
 
@@ -43,7 +43,7 @@ class TVShow extends Video
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Video\Actor
      */
-    public function createActor ()
+    public function createActor()
     {
         return new Actor( $this->ownerDocument );
     }
@@ -55,7 +55,7 @@ class TVShow extends Video
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Video\Writer
      */
-    public function createWriter ()
+    public function createWriter()
     {
         return new Writer( $this->ownerDocument );
     }
@@ -67,7 +67,7 @@ class TVShow extends Video
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Video\Director
      */
-    public function createDirector ()
+    public function createDirector()
     {
         return new Director( $this->ownerDocument );
     }

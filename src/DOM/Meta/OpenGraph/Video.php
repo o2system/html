@@ -12,7 +12,7 @@
 
 namespace O2System\HTML\DOM\Meta\OpenGraph;
 
-    // ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 /**
  * Class Video
@@ -21,7 +21,7 @@ namespace O2System\HTML\DOM\Meta\OpenGraph;
  */
 class Video extends Basic
 {
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         if ( strpos( $url, 'http://' ) !== false ) {
             parent::setMetadata( 'video', $url );
@@ -35,7 +35,7 @@ class Video extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setSecureUrl ( $url )
+    public function setSecureUrl( $url )
     {
         if ( strpos( $url, 'https://' ) !== false ) {
             $this->setMetadata( 'secure_url', $url );
@@ -46,7 +46,7 @@ class Video extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'video:' . $property, $content );
 
@@ -55,7 +55,7 @@ class Video extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setMime ( $mime )
+    public function setMime( $mime )
     {
         $this->setMetadata( 'type', $mime );
 
@@ -64,7 +64,7 @@ class Video extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setSize ( $width, $height )
+    public function setSize( $width, $height )
     {
         if ( is_numeric( $width ) AND is_numeric( $height ) ) {
             $this->setMetadata( 'width', $width );
@@ -74,7 +74,7 @@ class Video extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setDuration ( $duration )
+    public function setDuration( $duration )
     {
         if ( is_int( $duration ) ) {
             $this->setMetadata( 'duration', $duration );
@@ -85,7 +85,7 @@ class Video extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setReleaseDate ( $date )
+    public function setReleaseDate( $date )
     {
         $this->setMetadata( 'release_date', $date );
 
@@ -94,7 +94,7 @@ class Video extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setTag ( $tag )
+    public function setTag( $tag )
     {
         $meta = $this->ownerDocument->createElement( 'meta' );
 

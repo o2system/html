@@ -46,7 +46,7 @@ class Website extends Basic
      *
      * @return Website
      */
-    public function __construct ( Document $document )
+    public function __construct( Document $document )
     {
         parent::__construct( $document );
 
@@ -62,7 +62,7 @@ class Website extends Basic
      *
      * @return static
      */
-    public function setName ( $name )
+    public function setName( $name )
     {
         $this->setMetadata( 'site_name', $name );
 
@@ -78,7 +78,7 @@ class Website extends Basic
      *
      * @return static
      */
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         $this->url = rtrim( $url, '/' ) . '/ns#';
 
@@ -99,7 +99,7 @@ class Website extends Basic
      *
      * @return static
      */
-    public function setNamespace ( $namespace )
+    public function setNamespace( $namespace )
     {
         $this->namespace = underscore( $namespace );
 

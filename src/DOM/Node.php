@@ -15,5 +15,5 @@ namespace O2System\HTML\DOM;
 
 class Node extends \DOMNode
 {
-    
+
 }

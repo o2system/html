@@ -30,7 +30,7 @@ use O2System\HTML\DOM\Meta\OpenGraph\Website;
  */
 class OpenGraph extends Meta
 {
-    public function createElement ( $property, $content )
+    public function createElement( $property, $content )
     {
         $meta = $this->ownerDocument->createElement( 'meta' );
 
@@ -45,47 +45,47 @@ class OpenGraph extends Meta
         return $meta;
     }
 
-    public function createBasicElement ()
+    public function createBasicElement()
     {
         return new Basic( $this->ownerDocument );
     }
 
-    public function createWebsiteElement ()
+    public function createWebsiteElement()
     {
         return new Website( $this->ownerDocument );
     }
 
-    public function createImageElement ()
+    public function createImageElement()
     {
         return new Image( $this->ownerDocument );
     }
 
-    public function createVideoElement ()
+    public function createVideoElement()
     {
         return new Video( $this->ownerDocument );
     }
 
-    public function createAudioElement ()
+    public function createAudioElement()
     {
         return new Audio( $this->ownerDocument );
     }
 
-    public function createBookElement ()
+    public function createBookElement()
     {
         return new Book( $this->ownerDocument );
     }
 
-    public function createArticleElement ()
+    public function createArticleElement()
     {
         return new Article( $this->ownerDocument );
     }
 
-    public function createProfileElement ()
+    public function createProfileElement()
     {
         return new Profile( $this->ownerDocument );
     }
 
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $meta = $this->ownerDocument->createElement( 'meta' );
 
@@ -100,7 +100,7 @@ class OpenGraph extends Meta
         return $this;
     }
 
-    public function offsetSet ( $property, $content )
+    public function offsetSet( $property, $content )
     {
         if ( $content instanceof Element ) {
             parent::offsetSet( $property, $content );

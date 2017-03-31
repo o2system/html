@@ -15,7 +15,7 @@ namespace O2System\HTML\DOM;
 
 class Implementation
 {
-    public function createDocument ()
+    public function createDocument()
     {
 
     }

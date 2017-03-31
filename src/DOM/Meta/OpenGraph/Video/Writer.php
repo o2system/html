@@ -29,7 +29,7 @@ class Writer extends Profile
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Image
      */
-    public function createImage ()
+    public function createImage()
     {
         return new Image( $this->ownerDocument );
     }

@@ -124,7 +124,7 @@ class OpenGraph extends CollectorPatternClass
      * @param string $locale
      * @param array  $alternates
      */
-    public function setLocale ( $locale, array $alternates = [ ] )
+    public function setLocale( $locale, array $alternates = [] )
     {
         $this->collections[ 'og:locale' ] = $locale;
 
@@ -142,7 +142,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @param string $title
      */
-    public function setTitle ( $title )
+    public function setTitle( $title )
     {
         $this->collections[ 'og:title' ] = $title;
     }
@@ -154,7 +154,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @param string $url
      */
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         $this->collections[ 'og:url' ] = $url;
     }
@@ -166,7 +166,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @param string $siteName
      */
-    public function setSiteName ( $siteName )
+    public function setSiteName( $siteName )
     {
         $this->collections[ 'og:site_name' ] = $siteName;
     }
@@ -178,7 +178,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @param string $description
      */
-    public function setDescription ( $description )
+    public function setDescription( $description )
     {
         $this->collections[ 'og:description' ] = $description;
     }
@@ -193,7 +193,7 @@ class OpenGraph extends CollectorPatternClass
      * @param string $image
      * @param array  $properties
      */
-    public function setImage ( $image, array $properties = [ ] )
+    public function setImage( $image, array $properties = [] )
     {
         $this->collections[ 'og:image' ] = $image;
 
@@ -214,7 +214,7 @@ class OpenGraph extends CollectorPatternClass
      * @param string $audio
      * @param array  $properties
      */
-    public function setAudio ( $audio, array $properties = [ ] )
+    public function setAudio( $audio, array $properties = [] )
     {
         $this->collections[ 'og:audio' ] = $audio;
 
@@ -235,7 +235,7 @@ class OpenGraph extends CollectorPatternClass
      * @param string $music
      * @param array  $properties
      */
-    public function setMusic ( $music, array $properties = [ ] )
+    public function setMusic( $music, array $properties = [] )
     {
         $this->setNamespace( self::MUSIC );
         $this->collections[ 'og:music' ] = $music;
@@ -256,7 +256,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @param string $namespace
      */
-    public function setNamespace ( $namespace )
+    public function setNamespace( $namespace )
     {
         $this->namespace = strtolower( $namespace );
 
@@ -272,7 +272,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @param string $type
      */
-    public function setType ( $type )
+    public function setType( $type )
     {
         $this->collections[ 'og:type' ] = $type;
     }
@@ -287,7 +287,7 @@ class OpenGraph extends CollectorPatternClass
      * @param string $video
      * @param array  $properties
      */
-    public function setVideo ( $video, array $properties = [ ] )
+    public function setVideo( $video, array $properties = [] )
     {
         $this->setNamespace( self::VIDEO );
         $this->collections[ 'og:video' ] = $video;
@@ -309,7 +309,7 @@ class OpenGraph extends CollectorPatternClass
      * @param string $method
      * @param array  $args
      */
-    public function __call ( $method, array $args = [ ] )
+    public function __call( $method, array $args = [] )
     {
         if ( method_exists( $this, $method ) ) {
             call_user_func_array( [ $this, $method ], $args );
@@ -354,7 +354,7 @@ class OpenGraph extends CollectorPatternClass
         }
     }
 
-    public function setFacebookAppId ( $facebook_app_id )
+    public function setFacebookAppId( $facebook_app_id )
     {
         $this->collections[ 'fb:app_id' ] = $facebook_app_id;
     }
@@ -368,7 +368,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @return string
      */
-    public function getHtmlOpenTag ( $currentHTMLTagString = null )
+    public function getHtmlOpenTag( $currentHTMLTagString = null )
     {
         $attributes = $this->getHtmlOpenTagAttributes();
 
@@ -388,7 +388,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @return array
      */
-    public function getHtmlOpenTagAttributes ()
+    public function getHtmlOpenTagAttributes()
     {
         return [
             'xmlns'    => 'http://www.w3.org/1999/xhtml',
@@ -406,7 +406,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @return string
      */
-    public function getHeadOpenTag ( $currentHeadTagString = null )
+    public function getHeadOpenTag( $currentHeadTagString = null )
     {
         $attributes = $this->getHeadOpenTagAttributes();
 
@@ -426,7 +426,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @return array
      */
-    public function getHeadOpenTagAttributes ()
+    public function getHeadOpenTagAttributes()
     {
         if ( empty( $this->namespace ) ) {
             return [
@@ -448,7 +448,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @return string
      */
-    public function __toString ()
+    public function __toString()
     {
         return $this->render();
     }
@@ -462,7 +462,7 @@ class OpenGraph extends CollectorPatternClass
      *
      * @return string
      */
-    public function render ()
+    public function render()
     {
         if ( ! empty( $this->collections ) ) {
             return implode( PHP_EOL, $this->collections );

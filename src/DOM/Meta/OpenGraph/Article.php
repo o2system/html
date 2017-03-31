@@ -12,7 +12,7 @@
 
 namespace O2System\HTML\DOM\Meta\OpenGraph;
 
-    // ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 /**
  * Class Article
@@ -28,7 +28,7 @@ class Article extends Website
      *
      * @return static
      */
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         $this->url = rtrim( $url, '/' ) . '/ns/article#';
 
@@ -49,7 +49,7 @@ class Article extends Website
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Article
      */
-    public function setPublishedTime ( $datetime )
+    public function setPublishedTime( $datetime )
     {
         return $this->setMetadata( 'published_time', $datetime );
     }
@@ -64,7 +64,7 @@ class Article extends Website
      *
      * @return static
      */
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'article:' . $property, $content );
 
@@ -80,7 +80,7 @@ class Article extends Website
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Article
      */
-    public function setModifiedTime ( $datetime )
+    public function setModifiedTime( $datetime )
     {
         return $this->setMetadata( 'modified_time', $datetime );
     }
@@ -94,7 +94,7 @@ class Article extends Website
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Article
      */
-    public function setExpirationTime ( $datetime )
+    public function setExpirationTime( $datetime )
     {
         return $this->setMetadata( 'expiration_time', $datetime );
     }
@@ -108,7 +108,7 @@ class Article extends Website
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Article
      */
-    public function section ( $section )
+    public function section( $section )
     {
         return $this->setMetadata( 'section', $section );
     }
@@ -122,7 +122,7 @@ class Article extends Website
      *
      * @return $this
      */
-    public function setTag ( $tag )
+    public function setTag( $tag )
     {
         $meta = $this->ownerDocument->createElement( 'meta' );
 
@@ -144,7 +144,7 @@ class Article extends Website
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Profile
      */
-    public function createAuthor ()
+    public function createAuthor()
     {
         return new Profile( $this->ownerDocument );
     }

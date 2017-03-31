@@ -12,7 +12,7 @@
 
 namespace O2System\HTML\DOM\Meta\OpenGraph;
 
-    // ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 /**
  * Class Image
@@ -28,7 +28,7 @@ class Image extends Basic
      *
      * @return static
      */
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         if ( strpos( $url, 'http://' ) !== false ) {
             parent::setMetadata( 'image', $url );
@@ -49,7 +49,7 @@ class Image extends Basic
      *
      * @return static
      */
-    public function setSecureUrl ( $url )
+    public function setSecureUrl( $url )
     {
         if ( strpos( $url, 'https://' ) !== false ) {
             $this->setMetadata( 'secure_url', $url );
@@ -68,7 +68,7 @@ class Image extends Basic
      *
      * @return static
      */
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'og:image:' . $property, $content );
 
@@ -84,7 +84,7 @@ class Image extends Basic
      *
      * @return static
      */
-    public function setMime ( $mime )
+    public function setMime( $mime )
     {
         if ( strpos( $mime, 'image/' ) !== false ) {
             $this->setMetadata( 'type', $mime );
@@ -103,7 +103,7 @@ class Image extends Basic
      *
      * @return static
      */
-    public function setSize ( $width, $height )
+    public function setSize( $width, $height )
     {
         if ( is_numeric( $width ) AND is_numeric( $height ) ) {
             $this->setMetadata( 'width', $width );

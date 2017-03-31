@@ -15,7 +15,7 @@ use O2System\Psr\Patterns\CollectorPatternClass;
 
 class Nodes extends CollectorPatternClass
 {
-    public function merge ( array $elements )
+    public function merge( array $elements )
     {
         foreach ( $elements as $name => $content ) {
             $this->push( $name, $content );
@@ -32,7 +32,7 @@ class Nodes extends CollectorPatternClass
      *
      * @return $this
      */
-    public function push ( $name, $content = null )
+    public function push( $name, $content = null )
     {
         if ( $name === 'http-equiv' ) {
             $value = key( $content );
@@ -41,9 +41,9 @@ class Nodes extends CollectorPatternClass
                 'http_equiv_' . $value,
                 new Tag(
                     'meta', [
-                              'http-equiv' => $value,
-                              'content'    => $content[ $value ],
-                          ]
+                        'http-equiv' => $value,
+                        'content'    => $content[ $value ],
+                    ]
                 )
             );
         } elseif ( $name === 'property' ) {
@@ -53,9 +53,9 @@ class Nodes extends CollectorPatternClass
                 'property_' . $value,
                 new Tag(
                     'meta', [
-                              'property' => $value,
-                              'content'  => $content[ $value ],
-                          ]
+                        'property' => $value,
+                        'content'  => $content[ $value ],
+                    ]
                 )
             );
         } else {
@@ -63,15 +63,15 @@ class Nodes extends CollectorPatternClass
                 underscore( $name ),
                 new Tag(
                     'meta', [
-                              'name'    => $name,
-                              'content' => ( is_array( $content ) ? implode( ', ', $content ) : $content ),
-                          ]
+                        'name'    => $name,
+                        'content' => ( is_array( $content ) ? implode( ', ', $content ) : $content ),
+                    ]
                 )
             );
         }
     }
 
-    public function replace ( $name, $content )
+    public function replace( $name, $content )
     {
         $this->__unset( $name );
 

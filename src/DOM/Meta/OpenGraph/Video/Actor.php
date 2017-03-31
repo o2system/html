@@ -29,7 +29,7 @@ class Actor extends Profile
      *
      * @param $role
      */
-    public function setRole ( $role )
+    public function setRole( $role )
     {
         $this->setMetadata( 'role', $role );
     }
@@ -41,7 +41,7 @@ class Actor extends Profile
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Image
      */
-    public function createImage ()
+    public function createImage()
     {
         return new Image( $this->ownerDocument );
     }

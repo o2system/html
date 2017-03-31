@@ -30,7 +30,7 @@ class XPath extends \DOMXPath
      *
      * @var array
      */
-    private $compiledExpressions = [ ];
+    private $compiledExpressions = [];
 
     // ------------------------------------------------------------------------
 
@@ -55,7 +55,7 @@ class XPath extends \DOMXPath
      * not return nodes will return an empty DOMNodeList.
      * @since 5.0
      */
-    public function query ( $expression, \DOMNode $context = null, $registerNodeNS = null )
+    public function query( $expression, \DOMNode $context = null, $registerNodeNS = null )
     {
         if ( strpos( $expression, '/' ) === false ) {
             $expression = $this->fetchExpression( $expression );
@@ -73,10 +73,10 @@ class XPath extends \DOMXPath
      *
      * @return string
      */
-    private function fetchExpression ( $expression )
+    private function fetchExpression( $expression )
     {
         $selectors = explode( ',', $expression );
-        $paths = [ ];
+        $paths = [];
 
         foreach ( $selectors as $selector ) {
             $selector = trim( $selector );
@@ -107,7 +107,7 @@ class XPath extends \DOMXPath
      *
      * @return string XPath expression
      */
-    private function fetchCssExpression ( $selector, $prefix = '//' )
+    private function fetchCssExpression( $selector, $prefix = '//' )
     {
         $pos = strrpos( $selector, '::' );
 
@@ -157,17 +157,17 @@ class XPath extends \DOMXPath
      *
      * @return array
      */
-    protected function fetchCssProperty ( $property )
+    protected function fetchCssProperty( $property )
     {
         $name = '(?P<name>[\w\-]*)';
         $args = '(?:\((?P<args>[^\)]+)\))';
         $regexp = '/(?:' . $name . $args . '?)?/is';
 
         if ( preg_match( $regexp, $property, $segments ) ) {
-            $result = [ ];
+            $result = [];
 
             $result[ 'name' ] = $segments[ 'name' ];
-            $result[ 'args' ] = isset( $segments[ 'args' ] ) ? explode( '|', $segments[ 'args' ] ) : [ ];
+            $result[ 'args' ] = isset( $segments[ 'args' ] ) ? explode( '|', $segments[ 'args' ] ) : [];
 
             return $result;
         }
@@ -185,14 +185,14 @@ class XPath extends \DOMXPath
      *
      * @return string
      */
-    protected function parseCssProperty ( $name, $args = [ ] )
+    protected function parseCssProperty( $name, $args = [] )
     {
         if ( $name === 'text' ) {
             return 'text()';
         }
 
         if ( $name === 'attr' ) {
-            $attributes = [ ];
+            $attributes = [];
 
             foreach ( $args as $attribute ) {
                 $attributes[] = sprintf( 'name() = "%s"', $attribute );
@@ -218,7 +218,7 @@ class XPath extends \DOMXPath
      * @throws \InvalidArgumentException if an empty string is passed
      * @throws \RuntimeException if the selector is not valid
      */
-    public function getSelectorSegments ( $selector )
+    public function getSelectorSegments( $selector )
     {
         $selector = trim( $selector );
 
@@ -309,11 +309,11 @@ class XPath extends \DOMXPath
      *
      * @throws InvalidArgumentException if you neither specify tag name nor attributes
      */
-    private function generateExpression ( $segments, $prefix = '//' )
+    private function generateExpression( $segments, $prefix = '//' )
     {
         $tagName = isset( $segments[ 'tag' ] ) ? $segments[ 'tag' ] : '*';
 
-        $attributes = [ ];
+        $attributes = [];
 
         // if the id attribute specified
         if ( isset( $segments[ 'id' ] ) ) {
@@ -373,7 +373,7 @@ class XPath extends \DOMXPath
      *
      * @return string
      */
-    protected function fetchCssAttributeSelector ( $name, $value )
+    protected function fetchCssAttributeSelector( $name, $value )
     {
         // if the attribute name starts with ^
         // example: *[^data-]
@@ -435,7 +435,7 @@ class XPath extends \DOMXPath
      *
      * @throws \RuntimeException if passed an unknown pseudo-class
      */
-    protected function fetchCssPseudoSelector ( $pseudo, $parameters = [ ], &$tagName )
+    protected function fetchCssPseudoSelector( $pseudo, $parameters = [], &$tagName )
     {
         switch ( $pseudo ) {
             case 'first-child':
@@ -494,7 +494,7 @@ class XPath extends \DOMXPath
      * @throws \RuntimeException if passed nth-child is empty
      * @throws \RuntimeException if passed an unknown nth-child expression
      */
-    protected function fetchCssPseudoNthSelector ( $expression )
+    protected function fetchCssPseudoNthSelector( $expression )
     {
         if ( $expression === '' ) {
             throw new RuntimeException(
@@ -543,7 +543,7 @@ class XPath extends \DOMXPath
      *
      * @return string
      */
-    protected function fetchCssPseudoContainsSelector ( $string, $caseSensitive = false )
+    protected function fetchCssPseudoContainsSelector( $string, $caseSensitive = false )
     {
         if ( $caseSensitive ) {
             return sprintf( 'text() = "%s"', $string );

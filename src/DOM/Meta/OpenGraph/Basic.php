@@ -39,7 +39,7 @@ class Basic
      *
      * @return Basic
      */
-    public function __construct ( Document $document )
+    public function __construct( Document $document )
     {
         $htmlElement = $document->getElementsByTagName( 'html' )->item( 0 );
         $htmlElement->setAttribute( 'prefix', 'og: http://ogp.me/ns#' );
@@ -56,7 +56,7 @@ class Basic
      *
      * @return static
      */
-    public function setAppId ( $appID )
+    public function setAppId( $appID )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'fb:app_id', $appID );
 
@@ -73,7 +73,7 @@ class Basic
      *
      * @return static
      */
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'og:' . $property, $content );
 
@@ -89,7 +89,7 @@ class Basic
      *
      * @return static
      */
-    public function setType ( $type )
+    public function setType( $type )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'og:type', $type );
 
@@ -105,7 +105,7 @@ class Basic
      *
      * @return static
      */
-    public function setTitle ( $title )
+    public function setTitle( $title )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'og:title', $title );
 
@@ -121,7 +121,7 @@ class Basic
      *
      * @return static
      */
-    public function setDescription ( $description )
+    public function setDescription( $description )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'og:description', $description );
 
@@ -137,7 +137,7 @@ class Basic
      *
      * @return static
      */
-    public function setDeterminer ( $determiner )
+    public function setDeterminer( $determiner )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'og:determiner', $determiner );
 
@@ -154,7 +154,7 @@ class Basic
      *
      * @return static
      */
-    public function setLocale ( $lang, $territory = null )
+    public function setLocale( $lang, $territory = null )
     {
         $lang = strtolower( $lang );
 
@@ -176,7 +176,7 @@ class Basic
      *
      * @return static
      */
-    public function setLocaleAlternate ( $lang, $territory = null )
+    public function setLocaleAlternate( $lang, $territory = null )
     {
         $lang = strtolower( $lang );
 

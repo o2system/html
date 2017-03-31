@@ -29,7 +29,7 @@ class Album extends Basic
      *
      * @param \O2System\HTML\Document $document
      */
-    public function __construct ( Document $document )
+    public function __construct( Document $document )
     {
         parent::__construct( $document );
 
@@ -45,7 +45,7 @@ class Album extends Basic
      *
      * @return static
      */
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         if ( strpos( $url, 'http' ) !== false ) {
             parent::setMetadata( 'url', $url );
@@ -64,7 +64,7 @@ class Album extends Basic
      *
      * @return static
      */
-    public function setTrack ( $trackNumber )
+    public function setTrack( $trackNumber )
     {
         if ( is_numeric( $trackNumber ) ) {
             $this->setMetadata( 'track', $trackNumber );
@@ -83,7 +83,7 @@ class Album extends Basic
      *
      * @return static
      */
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'music:album:' . $property, $content );
 

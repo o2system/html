@@ -12,7 +12,7 @@
 
 namespace O2System\HTML\DOM;
 
-    // ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 /**
  * Class Script
@@ -26,7 +26,7 @@ class Script extends \ArrayIterator
      *
      * @param \O2System\HTML\DOM\Script $script
      */
-    public function import ( Script $script )
+    public function import( Script $script )
     {
         foreach ( $script->getArrayCopy() as $scriptTextContent ) {
             $this->append( $scriptTextContent );
@@ -41,7 +41,7 @@ class Script extends \ArrayIterator
      * @param string $offset
      * @param string $value
      */
-    public function offsetSet ( $offset, $value )
+    public function offsetSet( $offset, $value )
     {
         $value = trim( $value );
 
@@ -57,7 +57,7 @@ class Script extends \ArrayIterator
      *
      * @return string
      */
-    public function __toString ()
+    public function __toString()
     {
         return PHP_EOL . implode( PHP_EOL, $this->getArrayCopy() ) . PHP_EOL;
     }

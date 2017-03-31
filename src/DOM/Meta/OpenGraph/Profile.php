@@ -40,7 +40,7 @@ class Profile extends Basic
      *
      * @return Profile
      */
-    public function __construct ( Document $document )
+    public function __construct( Document $document )
     {
         parent::__construct( $document );
 
@@ -49,7 +49,7 @@ class Profile extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setSiteName ( $name )
+    public function setSiteName( $name )
     {
         $this->setMetadata( 'site_name', $name );
 
@@ -58,7 +58,7 @@ class Profile extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'profile:' . $property, $content );
 
@@ -67,7 +67,7 @@ class Profile extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         $this->url = rtrim( $url, '/' ) . '/ns/profile#';
 
@@ -81,7 +81,7 @@ class Profile extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setName ( $name )
+    public function setName( $name )
     {
         $xName = explode( ' ', $name );
         $firstName = $xName[ 0 ];
@@ -98,7 +98,7 @@ class Profile extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setUsername ( $username )
+    public function setUsername( $username )
     {
         $this->setMetadata( 'username', $username );
 
@@ -107,7 +107,7 @@ class Profile extends Basic
 
     // ------------------------------------------------------------------------
 
-    public function setGender ( $gender )
+    public function setGender( $gender )
     {
         $gender = strtolower( $gender );
 

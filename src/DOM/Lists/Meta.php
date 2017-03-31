@@ -25,14 +25,14 @@ class Meta extends \ArrayIterator
 {
     public $ownerDocument;
 
-    public function __construct ( Document $ownerDocument )
+    public function __construct( Document $ownerDocument )
     {
         $this->ownerDocument =& $ownerDocument;
     }
 
-    public function import ( Meta $metaNodes )
+    public function import( Meta $metaNodes )
     {
-        if( is_array( $metaNodes = $metaNodes->getArrayCopy() ) ) {
+        if ( is_array( $metaNodes = $metaNodes->getArrayCopy() ) ) {
             foreach ( $metaNodes as $name => $value ) {
                 $this->offsetSet( $name, $value );
             }
@@ -41,7 +41,7 @@ class Meta extends \ArrayIterator
         return $this;
     }
 
-    public function offsetSet ( $name, $value )
+    public function offsetSet( $name, $value )
     {
         if ( $value instanceof Element ) {
             parent::offsetSet( $name, $value );
@@ -53,7 +53,7 @@ class Meta extends \ArrayIterator
         }
     }
 
-    public function createElement ( $name, $value )
+    public function createElement( $name, $value )
     {
         $meta = $this->ownerDocument->createElement( 'meta' );
         $meta->setAttribute( $name, $value );

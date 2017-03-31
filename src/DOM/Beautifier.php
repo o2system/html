@@ -12,7 +12,7 @@
 
 namespace O2System\HTML\DOM;
 
-    // ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 /**
  * Class FormatOutput
@@ -108,12 +108,14 @@ class Beautifier
      * @param string $elementName
      * @param int    $type FormatOutput::ELEMENT_TYPE_BLOCK | FormatOutput::ELEMENT_TYPE_INLINE
      */
-    public function setElementType ( $elementName, $type )
+    public function setElementType( $elementName, $type )
     {
         if ( $type === static::ELEMENT_TYPE_BLOCK ) {
             $this->inlineElements = array_diff( $this->inlineElements, [ $elementName ] );
-        } else if ( $type === static::ELEMENT_TYPE_INLINE ) {
-            $this->inlineElements[] = $elementName;
+        } else {
+            if ( $type === static::ELEMENT_TYPE_INLINE ) {
+                $this->inlineElements[] = $elementName;
+            }
         }
 
         if ( $this->inlineElements ) {
@@ -130,10 +132,10 @@ class Beautifier
      *
      * @return string
      */
-    public function format ( $source )
+    public function format( $source )
     {
         // We does not indent <script> body. Instead, it temporary removes it from the code, indents the input, and restores the script body.
-        $tempScriptElements = [ ];
+        $tempScriptElements = [];
 
         if ( preg_match_all( '/<script\b[^>]*>([\s\S]*?)<\/script>/mi', $source, $matches ) ) {
             $tempScriptElements = $matches[ 0 ];
@@ -150,7 +152,7 @@ class Beautifier
         $source = preg_replace( '/\s{2,}/', ' ', $source );
 
         // Remove inline elements and replace them with text entities.
-        $tempInlineElements = [ ];
+        $tempInlineElements = [];
 
         if ( preg_match_all(
             '/<(' . implode( '|', $this->inlineElements ) . ')[^>]*>(?:[^<]*)<\/\1>/',
@@ -204,11 +206,13 @@ class Beautifier
 
                     if ( $rule === static::MATCH_INDENT_NO ) {
 
-                    } else if ( $rule === static::MATCH_INDENT_DECREASE ) {
-                        $nextLineIndentationLevel--;
-                        $indentationLevel--;
                     } else {
-                        $nextLineIndentationLevel++;
+                        if ( $rule === static::MATCH_INDENT_DECREASE ) {
+                            $nextLineIndentationLevel--;
+                            $indentationLevel--;
+                        } else {
+                            $nextLineIndentationLevel++;
+                        }
                     }
 
                     if ( $indentationLevel < 0 ) {
@@ -220,8 +224,7 @@ class Beautifier
                     break;
                 }
             }
-        }
-        while ( $match );
+        } while ( $match );
 
         $output = preg_replace( '/(<(\w+)[^>]*>)\s*(<\/\2>)/', '\\1\\3', $output );
 

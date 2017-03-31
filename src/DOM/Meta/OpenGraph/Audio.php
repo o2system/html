@@ -12,7 +12,7 @@
 
 namespace O2System\HTML\DOM\Meta\OpenGraph;
 
-    // ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 /**
  * Class Audio
@@ -28,7 +28,7 @@ class Audio extends Basic
      *
      * @return static
      */
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         if ( strpos( $url, 'http://' ) !== false ) {
             parent::setMetadata( 'audio', $url );
@@ -49,7 +49,7 @@ class Audio extends Basic
      *
      * @return static
      */
-    public function setSecureUrl ( $url )
+    public function setSecureUrl( $url )
     {
         if ( strpos( $url, 'https://' ) !== false ) {
             $this->setMetadata( 'secure_url', $url );
@@ -68,7 +68,7 @@ class Audio extends Basic
      *
      * @return static
      */
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'audio:' . $property, $content );
 
@@ -84,7 +84,7 @@ class Audio extends Basic
      *
      * @return static
      */
-    public function setMime ( $mime )
+    public function setMime( $mime )
     {
         if ( strpos( $mime, 'audio/' ) !== false ) {
             $this->setMetadata( 'type', $mime );

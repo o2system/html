@@ -31,7 +31,7 @@ class Song extends Audio
      *
      * @return Song
      */
-    public function __construct ( Document $document )
+    public function __construct( Document $document )
     {
         parent::__construct( $document );
 
@@ -47,7 +47,7 @@ class Song extends Audio
      *
      * @return static
      */
-    public function setUrl ( $url )
+    public function setUrl( $url )
     {
         if ( strpos( $url, 'http' ) !== false ) {
             parent::setMetadata( 'url', $url );
@@ -66,7 +66,7 @@ class Song extends Audio
      *
      * @return static
      */
-    public function setDuration ( $duration )
+    public function setDuration( $duration )
     {
         if ( is_int( $duration ) ) {
             $this->setMetadata( 'duration', $duration );
@@ -85,7 +85,7 @@ class Song extends Audio
      *
      * @return static
      */
-    public function setMetadata ( $property, $content )
+    public function setMetadata( $property, $content )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'music:song:' . $property, $content );
 
@@ -101,7 +101,7 @@ class Song extends Audio
      *
      * @return static
      */
-    public function setMusician ( $musician )
+    public function setMusician( $musician )
     {
         $meta = $this->ownerDocument->createElement( 'meta' );
 
@@ -125,7 +125,7 @@ class Song extends Audio
      *
      * @return static
      */
-    public function setDisc ( $discNumber )
+    public function setDisc( $discNumber )
     {
         if ( is_numeric( $discNumber ) ) {
             $this->setMetadata( 'disc', $discNumber );
@@ -143,7 +143,7 @@ class Song extends Audio
      *
      * @return static
      */
-    public function setTrack ( $trackNumber )
+    public function setTrack( $trackNumber )
     {
         if ( is_numeric( $trackNumber ) ) {
             $this->setMetadata( 'track', $trackNumber );
@@ -161,7 +161,7 @@ class Song extends Audio
      *
      * @return static
      */
-    public function setReleaseDate ( $date )
+    public function setReleaseDate( $date )
     {
         $this->ownerDocument->metaOGPNodes->offsetSet( 'music:release_date', $date );
 
@@ -175,7 +175,7 @@ class Song extends Audio
      *
      * @return \O2System\HTML\DOM\Meta\OpenGraph\Music\Album
      */
-    public function createAlbum ()
+    public function createAlbum()
     {
         return new Album( $this->ownerDocument );
     }
