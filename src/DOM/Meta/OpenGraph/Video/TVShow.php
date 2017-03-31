@@ -10,12 +10,12 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph\Video;
+namespace O2System\Html\Dom\Meta\OpenGraph\Video;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
-use O2System\HTML\DOM\Meta\OpenGraph\Video;
+use O2System\Html\Document;
+use O2System\Html\Dom\Meta\OpenGraph\Video;
 
 /**
  * Class TVShow
@@ -27,7 +27,7 @@ class TVShow extends Video
     /**
      * TVShow::__construct
      *
-     * @param \O2System\HTML\Document $document
+     * @param \O2System\Html\Document $document
      */
     public function __construct( Document $document )
     {
@@ -41,7 +41,7 @@ class TVShow extends Video
     /**
      * TVShow::createActor
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Video\Actor
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Video\Actor
      */
     public function createActor()
     {
@@ -53,7 +53,7 @@ class TVShow extends Video
     /**
      * TVShow::createWriter
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Video\Writer
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Video\Writer
      */
     public function createWriter()
     {
@@ -65,7 +65,7 @@ class TVShow extends Video
     /**
      * TVShow::createDirector
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Video\Director
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Video\Director
      */
     public function createDirector()
     {

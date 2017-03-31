@@ -10,11 +10,11 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Lists;
+namespace O2System\Html\Dom\Lists;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\DOM\Element;
+use O2System\Html\Dom\Element;
 use RecursiveIterator;
 
 /**

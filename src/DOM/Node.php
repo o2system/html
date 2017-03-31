@@ -10,7 +10,7 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM;
+namespace O2System\Html\Dom;
 
 
 class Node extends \DOMNode

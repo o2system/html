@@ -10,12 +10,12 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph\Music;
+namespace O2System\Html\Dom\Meta\OpenGraph\Music;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
-use O2System\HTML\DOM\Meta\OpenGraph\Basic;
+use O2System\Html\Document;
+use O2System\Html\Dom\Meta\OpenGraph\Basic;
 
 /**
  * Class Album
@@ -27,7 +27,7 @@ class Album extends Basic
     /**
      * Album::__construct
      *
-     * @param \O2System\HTML\Document $document
+     * @param \O2System\Html\Document $document
      */
     public function __construct( Document $document )
     {

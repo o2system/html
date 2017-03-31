@@ -10,12 +10,12 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph\Video;
+namespace O2System\Html\Dom\Meta\OpenGraph\Video;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
-use O2System\HTML\DOM\Meta\OpenGraph\Video;
+use O2System\Html\Document;
+use O2System\Html\Dom\Meta\OpenGraph\Video;
 
 /**
  * Class Movie
@@ -27,7 +27,7 @@ class Movie extends Video
     /**
      * Movie::__construct
      *
-     * @param \O2System\HTML\Document $document
+     * @param \O2System\Html\Document $document
      *
      * @return Movie
      */
@@ -43,7 +43,7 @@ class Movie extends Video
     /**
      * Movie::createActor
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Video\Actor
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Video\Actor
      */
     public function createActor()
     {
@@ -55,7 +55,7 @@ class Movie extends Video
     /**
      * Movie::createWriter
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Video\Writer
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Video\Writer
      */
     public function createWriter()
     {
@@ -67,7 +67,7 @@ class Movie extends Video
     /**
      * Movie::createDirector
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Video\Director
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Video\Director
      */
     public function createDirector()
     {

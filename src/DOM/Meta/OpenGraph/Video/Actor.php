@@ -10,12 +10,12 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph\Video;
+namespace O2System\Html\Dom\Meta\OpenGraph\Video;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\DOM\Meta\OpenGraph\Image;
-use O2System\HTML\DOM\Meta\OpenGraph\Profile;
+use O2System\Html\Dom\Meta\OpenGraph\Image;
+use O2System\Html\Dom\Meta\OpenGraph\Profile;
 
 /**
  * Class Actor
@@ -39,7 +39,7 @@ class Actor extends Profile
     /**
      * Actor::createImage
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Image
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Image
      */
     public function createImage()
     {

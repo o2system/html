@@ -10,11 +10,11 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\Transitional;
+namespace O2System\Html\Transitional;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
+use O2System\Html\Document;
 
 /**
  * Class HTML

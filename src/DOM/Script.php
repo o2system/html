@@ -10,7 +10,7 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM;
+namespace O2System\Html\Dom;
 
 // ------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ class Script extends \ArrayIterator
     /**
      * Script::import
      *
-     * @param \O2System\HTML\DOM\Script $script
+     * @param \O2System\Html\Dom\Script $script
      */
     public function import( Script $script )
     {

@@ -10,7 +10,7 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM;
+namespace O2System\Html\Dom;
 
 // ------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ class Style extends \ArrayIterator
     /**
      * Style::import
      *
-     * @param \O2System\HTML\DOM\Style $style
+     * @param \O2System\Html\Dom\Style $style
      */
     public function import( Style $style )
     {

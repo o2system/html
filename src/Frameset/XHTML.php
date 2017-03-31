@@ -10,11 +10,11 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\Frameset;
+namespace O2System\Html\Frameset;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
+use O2System\Html\Document;
 
 /**
  * Class XHTML

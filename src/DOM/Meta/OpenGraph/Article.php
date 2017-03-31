@@ -10,7 +10,7 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph;
+namespace O2System\Html\Dom\Meta\OpenGraph;
 
 // ------------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ class Article extends Website
      *
      * @param $datetime
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Article
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Article
      */
     public function setPublishedTime( $datetime )
     {
@@ -78,7 +78,7 @@ class Article extends Website
      *
      * @param $datetime
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Article
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Article
      */
     public function setModifiedTime( $datetime )
     {
@@ -92,7 +92,7 @@ class Article extends Website
      *
      * @param $datetime
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Article
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Article
      */
     public function setExpirationTime( $datetime )
     {
@@ -106,7 +106,7 @@ class Article extends Website
      *
      * @param $section
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Article
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Article
      */
     public function section( $section )
     {
@@ -142,7 +142,7 @@ class Article extends Website
     /**
      * Article::createAuthor
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Profile
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Profile
      */
     public function createAuthor()
     {

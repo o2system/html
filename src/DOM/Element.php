@@ -10,11 +10,11 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM;
+namespace O2System\Html\Dom;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
+use O2System\Html\Document;
 
 /**
  * Class Element
@@ -135,7 +135,7 @@ class Element extends \DOMElement
     /**
      * Element::clone
      *
-     * @return \O2System\HTML\DOM\Element
+     * @return \O2System\Html\Dom\Element
      */
     public function clones()
     {

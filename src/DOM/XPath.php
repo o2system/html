@@ -10,12 +10,12 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM;
+namespace O2System\Html\Dom;
 
 // ------------------------------------------------------------------------
 
 use InvalidArgumentException;
-use O2System\HTML\DOM\Lists\Nodes;
+use O2System\Html\Dom\Lists\Nodes;
 use RuntimeException;
 
 /**

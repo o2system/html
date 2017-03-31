@@ -10,11 +10,11 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph;
+namespace O2System\Html\Dom\Meta\OpenGraph;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
+use O2System\Html\Document;
 
 /**
  * Class Basic
@@ -26,7 +26,7 @@ class Basic
     /**
      * Meta Open Graph Owner Document
      *
-     * @var \O2System\HTML\Document
+     * @var \O2System\Html\Document
      */
     public $ownerDocument;
 
@@ -35,7 +35,7 @@ class Basic
     /**
      * Basic::__construct
      *
-     * @param \O2System\HTML\Document $document
+     * @param \O2System\Html\Document $document
      *
      * @return Basic
      */

@@ -10,14 +10,14 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph\Music;
+namespace O2System\Html\Dom\Meta\OpenGraph\Music;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
-use O2System\HTML\DOM\Meta\OpenGraph\Audio;
-use O2System\HTML\DOM\Meta\OpenGraph\Basic;
-use O2System\HTML\DOM\Meta\OpenGraph\Image;
+use O2System\Html\Document;
+use O2System\Html\Dom\Meta\OpenGraph\Audio;
+use O2System\Html\Dom\Meta\OpenGraph\Basic;
+use O2System\Html\Dom\Meta\OpenGraph\Image;
 
 /**
  * Class Playlist
@@ -29,7 +29,7 @@ class Playlist extends Basic
     /**
      * Playlist::__construct
      *
-     * @param \O2System\HTML\Document $document
+     * @param \O2System\Html\Document $document
      */
     public function __construct( Document $document )
     {
@@ -77,7 +77,7 @@ class Playlist extends Basic
     /**
      * Playlist::createImage
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Image
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Image
      */
     public function createImage()
     {
@@ -89,7 +89,7 @@ class Playlist extends Basic
     /**
      * Playlist::createAudio
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Audio
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Audio
      */
     public function createAudio()
     {

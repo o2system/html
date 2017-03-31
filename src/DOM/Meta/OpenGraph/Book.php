@@ -10,7 +10,7 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph;
+namespace O2System\Html\Dom\Meta\OpenGraph;
 
 // ------------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ class Book extends Website
      *
      * @param $datetime
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Book
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Book
      */
     public function setReleaseDate( $datetime )
     {
@@ -78,7 +78,7 @@ class Book extends Website
      *
      * @param $isbn
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Book
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Book
      */
     public function setIsbn( $isbn )
     {
@@ -114,7 +114,7 @@ class Book extends Website
     /**
      * Book::createAuthor
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Profile
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Profile
      */
     public function createAuthor()
     {

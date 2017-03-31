@@ -37,7 +37,7 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta;
+namespace O2System\Html\Dom\Meta;
 
 // ------------------------------------------------------------------------
 use O2System\Core\Patterns\CollectorPatternClass;

@@ -11,13 +11,13 @@
 // ------------------------------------------------------------------------
 
 /**
- * O2System HTML Autoload
+ * O2System Html Autoload
  *
  * @param $className
  */
 spl_autoload_register(
     function ( $className ) {
-        if ( strpos( $className, 'O2System\HTML\\' ) === false ) {
+        if ( strpos( $className, 'O2System\Html\\' ) === false ) {
             return;
         }
 
@@ -33,7 +33,7 @@ spl_autoload_register(
         $filePath .= str_replace( '_', DIRECTORY_SEPARATOR, $className ) . '.php';
 
         // Fixed Path
-        $filePath = str_replace( 'O2System\HTML\\', __DIR__ . DIRECTORY_SEPARATOR, $filePath );
+        $filePath = str_replace( 'O2System\Html\\', __DIR__ . DIRECTORY_SEPARATOR, $filePath );
         $filePath = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $filePath );
 
         if ( file_exists( $filePath ) ) {

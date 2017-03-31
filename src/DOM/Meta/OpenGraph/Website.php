@@ -10,11 +10,11 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph;
+namespace O2System\Html\Dom\Meta\OpenGraph;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
+use O2System\Html\Document;
 
 /**
  * Class Website
@@ -42,7 +42,7 @@ class Website extends Basic
     /**
      * Website::__construct
      *
-     * @param \O2System\HTML\Document $document
+     * @param \O2System\Html\Document $document
      *
      * @return Website
      */

@@ -10,13 +10,13 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph\Music;
+namespace O2System\Html\Dom\Meta\OpenGraph\Music;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\DOM\Meta\OpenGraph\Audio;
-use O2System\HTML\DOM\Meta\OpenGraph\Image;
-use O2System\HTML\DOM\Meta\OpenGraph\Profile;
+use O2System\Html\Dom\Meta\OpenGraph\Audio;
+use O2System\Html\Dom\Meta\OpenGraph\Image;
+use O2System\Html\Dom\Meta\OpenGraph\Profile;
 
 /**
  * Class Musician
@@ -28,7 +28,7 @@ class Musician extends Profile
     /**
      * Musician::createImage
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Image
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Image
      */
     public function createImage()
     {
@@ -40,7 +40,7 @@ class Musician extends Profile
     /**
      * Musician::createAudio
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Audio
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Audio
      */
     public function createAudio()
     {

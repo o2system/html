@@ -10,18 +10,18 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML;
+namespace O2System\Html;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\DOM\Beautifier;
-use O2System\HTML\DOM\Element;
-use O2System\HTML\DOM\Lists\Meta;
-use O2System\HTML\DOM\Lists\Nodes;
-use O2System\HTML\DOM\Lists\OpenGraph;
-use O2System\HTML\DOM\Script;
-use O2System\HTML\DOM\Style;
-use O2System\HTML\DOM\XPath;
+use O2System\Html\Dom\Beautifier;
+use O2System\Html\Dom\Element;
+use O2System\Html\Dom\Lists\Meta;
+use O2System\Html\Dom\Lists\Nodes;
+use O2System\Html\Dom\Lists\OpenGraph;
+use O2System\Html\Dom\Script;
+use O2System\Html\Dom\Style;
+use O2System\Html\Dom\XPath;
 
 /**
  * Class Document
@@ -33,42 +33,42 @@ class Document extends \DOMDocument
     /**
      * Document Meta Nodes
      *
-     * @var \O2System\HTML\DOM\Lists\Meta
+     * @var \O2System\Html\Dom\Lists\Meta
      */
     public $metaNodes;
 
     /**
      * Document Meta Open Graph Nodes
      *
-     * @var \O2System\HTML\DOM\Lists\OpenGraph
+     * @var \O2System\Html\Dom\Lists\OpenGraph
      */
     public $metaOGPNodes;
 
     /**
      * Document Link Nodes
      *
-     * @var \O2System\HTML\DOM\Lists\Asset
+     * @var \O2System\Html\Dom\Lists\Asset
      */
     public $linkNodes;
 
     /**
      * Document Style Content
      *
-     * @var \O2System\HTML\DOM\Style
+     * @var \O2System\Html\Dom\Style
      */
     public $styleContent;
 
     /**
      * Document Script Nodes
      *
-     * @var \O2System\HTML\DOM\Lists\Asset
+     * @var \O2System\Html\Dom\Lists\Asset
      */
     public $scriptNodes;
 
     /**
      * Document Script Content
      *
-     * @var \O2System\HTML\DOM\Script
+     * @var \O2System\Html\Dom\Script
      */
     public $scriptContent;
 
@@ -86,20 +86,20 @@ class Document extends \DOMDocument
     {
         parent::__construct( $version, $encoding );
 
-        $this->registerNodeClass( 'DOMElement', '\O2System\HTML\DOM\Element' );
-        $this->registerNodeClass( 'DOMAttr', '\O2System\HTML\DOM\Attr' );
+        $this->registerNodeClass( 'DOMElement', '\O2System\Html\Dom\Element' );
+        $this->registerNodeClass( 'DOMAttr', '\O2System\Html\Dom\Attr' );
 
         $this->formatOutput = true;
 
         $this->metaNodes = new Meta( $this );
         $this->metaOGPNodes = new OpenGraph( $this );
 
-        $this->linkNodes = new DOM\Lists\Asset( $this );
+        $this->linkNodes = new Dom\Lists\Asset( $this );
         $this->linkNodes->element = 'link';
 
         $this->styleContent = new Style();
 
-        $this->scriptNodes = new DOM\Lists\Asset( $this );
+        $this->scriptNodes = new Dom\Lists\Asset( $this );
         $this->scriptNodes->element = 'script';
 
         $this->scriptContent = new Script();
@@ -296,7 +296,7 @@ HTML;
      *
      * @param string $source HTML Source Code.
      *
-     * @return \DOMNode|\O2System\HTML\DOM\Element
+     * @return \DOMNode|\O2System\Html\Dom\Element
      */
     public function importSourceNode( $source )
     {

@@ -10,12 +10,12 @@
  */
 // ------------------------------------------------------------------------
 
-namespace O2System\HTML\DOM\Meta\OpenGraph\Music;
+namespace O2System\Html\Dom\Meta\OpenGraph\Music;
 
 // ------------------------------------------------------------------------
 
-use O2System\HTML\Document;
-use O2System\HTML\DOM\Meta\OpenGraph\Audio;
+use O2System\Html\Document;
+use O2System\Html\Dom\Meta\OpenGraph\Audio;
 
 /**
  * Class Song
@@ -27,7 +27,7 @@ class Song extends Audio
     /**
      * Song::__construct
      *
-     * @param \O2System\HTML\Document $document
+     * @param \O2System\Html\Document $document
      *
      * @return Song
      */
@@ -173,7 +173,7 @@ class Song extends Audio
     /**
      * Song::createAlbum
      *
-     * @return \O2System\HTML\DOM\Meta\OpenGraph\Music\Album
+     * @return \O2System\Html\Dom\Meta\OpenGraph\Music\Album
      */
     public function createAlbum()
     {

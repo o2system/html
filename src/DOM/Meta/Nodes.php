@@ -7,10 +7,10 @@
  * @copyright   Copyright (c) 2016 Steeve Andrian Salim
  */
 
-namespace O2System\HTML\DOM\Meta;
+namespace O2System\Html\Dom\Meta;
 
 
-use O2System\HTML\Tag;
+use O2System\Html\Tag;
 use O2System\Psr\Patterns\CollectorPatternClass;
 
 class Nodes extends CollectorPatternClass
