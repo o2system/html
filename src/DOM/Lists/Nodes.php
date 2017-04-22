@@ -26,6 +26,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 {
     public $length = 0;
 
+    // ------------------------------------------------------------------------
+
     public function __construct( \DOMNodeList $nodeList )
     {
         $nodes = [];
@@ -38,10 +40,14 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
         parent::__construct( $nodes );
     }
 
+    // ------------------------------------------------------------------------
+
     public function item( $offset )
     {
         return $this->offsetGet( $offset );
     }
+
+    // ------------------------------------------------------------------------
 
     /**
      * Returns if an iterator can be created for the current entry.
@@ -55,6 +61,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
         return $this->current()->hasChildNodes();
     }
 
+    // ------------------------------------------------------------------------
+
     /**
      * Returns an iterator for the current entry.
      *
@@ -67,6 +75,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
         return new self( $this->current()->childNodes );
     }
 
+    // ------------------------------------------------------------------------
+
     public function replace( $source )
     {
         foreach ( $this as $node ) {
@@ -75,6 +85,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
             }
         }
     }
+
+    // ------------------------------------------------------------------------
 
     public function remove()
     {
@@ -87,6 +99,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
         }
     }
 
+    // ------------------------------------------------------------------------
+
     public function prepend( $source )
     {
         foreach ( $this as $node ) {
@@ -97,6 +111,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
         return $this;
     }
+
+    // ------------------------------------------------------------------------
 
     public function append( $source )
     {
@@ -109,6 +125,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
         return $this;
     }
 
+    // ------------------------------------------------------------------------
+
     public function before( $source )
     {
         foreach ( $this as $node ) {
@@ -119,6 +137,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
         return $this;
     }
+
+    // ------------------------------------------------------------------------
 
     public function after( $source )
     {
@@ -131,6 +151,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
         return $this;
     }
 
+    // ------------------------------------------------------------------------
+
     public function __empty()
     {
         foreach ( $this as $node ) {
@@ -141,6 +163,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
         return $this;
     }
+
+    // ------------------------------------------------------------------------
 
     public function __clone()
     {

@@ -28,11 +28,27 @@ class Asset extends \ArrayIterator
 
     public $ownerDocument;
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Asset::__construct
+     *
+     * @param \O2System\Html\Document $ownerDocument
+     */
     public function __construct( Document $ownerDocument )
     {
         $this->ownerDocument =& $ownerDocument;
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Asset::import
+     *
+     * @param \O2System\Html\Dom\Lists\Asset $assetNodes
+     *
+     * @return static
+     */
     public function import( Asset $assetNodes )
     {
         if ( is_array( $assetNodes = $assetNodes->getArrayCopy() ) ) {
@@ -44,6 +60,14 @@ class Asset extends \ArrayIterator
         return $this;
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Asset::offsetSet
+     *
+     * @param string $name
+     * @param string $value
+     */
     public function offsetSet( $name, $value )
     {
         if ( $value instanceof Element ) {
@@ -56,6 +80,16 @@ class Asset extends \ArrayIterator
         }
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Asset::createElement
+     *
+     * @param string $name
+     * @param string $value
+     *
+     * @return \DOMElement
+     */
     public function createElement( $name, $value )
     {
         $meta = $this->ownerDocument->createElement( $this->element );

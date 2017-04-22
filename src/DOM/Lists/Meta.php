@@ -26,11 +26,27 @@ class Meta extends \ArrayIterator
 {
     public $ownerDocument;
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Meta::__construct
+     *
+     * @param \O2System\Html\Document $ownerDocument
+     */
     public function __construct( Document $ownerDocument )
     {
         $this->ownerDocument =& $ownerDocument;
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Meta::import
+     *
+     * @param \O2System\Html\Dom\Lists\Meta $metaNodes
+     *
+     * @return $this
+     */
     public function import( Meta $metaNodes )
     {
         if ( is_array( $metaNodes = $metaNodes->getArrayCopy() ) ) {
@@ -42,6 +58,14 @@ class Meta extends \ArrayIterator
         return $this;
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Meta::offsetSet
+     *
+     * @param string $name
+     * @param string $value
+     */
     public function offsetSet( $name, $value )
     {
         if ( $value instanceof Element ) {
@@ -54,6 +78,16 @@ class Meta extends \ArrayIterator
         }
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Meta::createElement
+     *
+     * @param $name
+     * @param $value
+     *
+     * @return \DOMElement
+     */
     public function createElement( $name, $value )
     {
         $meta = $this->ownerDocument->createElement( 'meta' );

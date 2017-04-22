@@ -46,45 +46,63 @@ class OpenGraph extends Meta
         return $meta;
     }
 
+    // ------------------------------------------------------------------------
+
     public function createBasicElement()
     {
         return new Basic( $this->ownerDocument );
     }
+
+    // ------------------------------------------------------------------------
 
     public function createWebsiteElement()
     {
         return new Website( $this->ownerDocument );
     }
 
+    // ------------------------------------------------------------------------
+
     public function createImageElement()
     {
         return new Image( $this->ownerDocument );
     }
+
+    // ------------------------------------------------------------------------
 
     public function createVideoElement()
     {
         return new Video( $this->ownerDocument );
     }
 
+    // ------------------------------------------------------------------------
+
     public function createAudioElement()
     {
         return new Audio( $this->ownerDocument );
     }
+
+    // ------------------------------------------------------------------------
 
     public function createBookElement()
     {
         return new Book( $this->ownerDocument );
     }
 
+    // ------------------------------------------------------------------------
+
     public function createArticleElement()
     {
         return new Article( $this->ownerDocument );
     }
 
+    // ------------------------------------------------------------------------
+
     public function createProfileElement()
     {
         return new Profile( $this->ownerDocument );
     }
+
+    // ------------------------------------------------------------------------
 
     public function setMetadata( $property, $content )
     {
@@ -100,6 +118,8 @@ class OpenGraph extends Meta
 
         return $this;
     }
+
+    // ------------------------------------------------------------------------
 
     public function offsetSet( $property, $content )
     {
