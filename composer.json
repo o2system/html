@@ -1,6 +1,7 @@
 {
   "name": "o2system/html",
   "description": "PHP Document and Element Library.",
+  "license": "MIT",
   "type": "php-library",
   "keywords": [
     "utilities",
@@ -35,7 +36,7 @@
   },
   "require": {
     "php": ">=5.6.0",
-    "o2system/kernel": "*"
+    "o2system/kernel": "1.*"
   },
   "autoload": {
     "psr-4": {
