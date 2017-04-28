@@ -29,11 +29,6 @@
     "issues": "https://github.com/o2system/html/issues",
     "forum": "https://www.facebook.com/groups/498147006994512"
   },
-  "links": {
-    "info": "http://www.o2system.id/libraries/html.html",
-    "documentation": "http://www.o2system.id/libraries/html/documentation.html",
-    "github-wiki": "http://github.com/o2system/html/wiki"
-  },
   "require": {
     "php": ">=5.6.0",
     "o2system/kernel": "1.*"
