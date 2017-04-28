@@ -2,7 +2,7 @@
   "name": "o2system/html",
   "description": "PHP Document and Element Library.",
   "license": "MIT",
-  "type": "php-library",
+  "type": "package",
   "keywords": [
     "utilities",
     "php",
@@ -38,9 +38,5 @@
       "O2System\\Html\\": "src"
     }
   },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.0.x-dev"
-    }
-  }
+  "minimum-stability": "dev"
 }
