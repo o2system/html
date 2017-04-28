@@ -42,5 +42,5 @@
       "O2System\\Html\\": "src"
     }
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "dev-master"
 }
