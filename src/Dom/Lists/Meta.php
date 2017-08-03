@@ -83,17 +83,20 @@ class Meta extends \ArrayIterator
     /**
      * Meta::createElement
      *
-     * @param $name
-     * @param $value
+     * @param array $attributes
      *
      * @return \DOMElement
      */
-    public function createElement( $name, $value )
+    public function createElement( array $attributes )
     {
         $meta = $this->ownerDocument->createElement( 'meta' );
-        $meta->setAttribute( $name, $value );
 
-        parent::offsetSet( $name, $meta );
+        $name = null;
+        foreach ( $attributes as $key => $value ) {
+            $meta->setAttribute( $key, $value );
+        }
+
+        $this[] = $meta;
 
         return $meta;
     }

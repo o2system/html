@@ -14,15 +14,6 @@ namespace O2System\Html;
 
 // ------------------------------------------------------------------------
 
-use O2System\Html\Dom\Beautifier;
-use O2System\Html\Dom\Element;
-use O2System\Html\Dom\Lists\Meta;
-use O2System\Html\Dom\Lists\Nodes;
-use O2System\Html\Dom\Lists\OpenGraph;
-use O2System\Html\Dom\Script;
-use O2System\Html\Dom\Style;
-use O2System\Html\Dom\XPath;
-
 /**
  * Class Document
  *
@@ -36,13 +27,6 @@ class Document extends \DOMDocument
      * @var \O2System\Html\Dom\Lists\Meta
      */
     public $metaNodes;
-
-    /**
-     * Document Meta Open Graph Nodes
-     *
-     * @var \O2System\Html\Dom\Lists\OpenGraph
-     */
-    public $metaOGPNodes;
 
     /**
      * Document Link Nodes
@@ -63,14 +47,28 @@ class Document extends \DOMDocument
      *
      * @var \O2System\Html\Dom\Lists\Asset
      */
-    public $scriptNodes;
+    public $headScriptNodes;
 
     /**
      * Document Script Content
      *
      * @var \O2System\Html\Dom\Script
      */
-    public $scriptContent;
+    public $headScriptContent;
+
+    /**
+     * Document Script Nodes
+     *
+     * @var \O2System\Html\Dom\Lists\Asset
+     */
+    public $bodyScriptNodes;
+
+    /**
+     * Document Script Content
+     *
+     * @var \O2System\Html\Dom\Script
+     */
+    public $bodyScriptContent;
 
     // ------------------------------------------------------------------------
 
@@ -91,18 +89,20 @@ class Document extends \DOMDocument
 
         $this->formatOutput = true;
 
-        $this->metaNodes = new Meta( $this );
-        $this->metaOGPNodes = new OpenGraph( $this );
+        $this->metaNodes = new Dom\Lists\Meta( $this );
 
         $this->linkNodes = new Dom\Lists\Asset( $this );
         $this->linkNodes->element = 'link';
 
-        $this->styleContent = new Style();
+        $this->styleContent = new Dom\Style();
 
-        $this->scriptNodes = new Dom\Lists\Asset( $this );
-        $this->scriptNodes->element = 'script';
+        $this->headScriptNodes = new Dom\Lists\Asset( $this );
+        $this->headScriptNodes->element = 'script';
+        $this->headScriptContent = new Dom\Script();
 
-        $this->scriptContent = new Script();
+        $this->bodyScriptNodes = new Dom\Lists\Asset( $this );
+        $this->bodyScriptNodes->element = 'script';
+        $this->bodyScriptContent = new Dom\Script();
 
         $this->loadHTMLTemplate();
     }
@@ -225,13 +225,6 @@ HTML;
             }
         }
 
-        // Insert Meta Open Graph Protocol
-        if ( is_array( $metaOGPNodes = $this->metaOGPNodes->getArrayCopy() ) ) {
-            foreach ( $metaOGPNodes as $metaOGPNode ) {
-                $headElement->appendChild( $this->importNode( $metaOGPNode ) );
-            }
-        }
-
         // Insert Link
         if ( count( $this->linkNodes ) ) {
             foreach ( $this->linkNodes as $linkNode ) {
@@ -239,19 +232,34 @@ HTML;
             }
         }
 
+        // Insert Head Script
+        if ( count( $this->headScriptNodes ) ) {
+            foreach ( $this->headScriptNodes as $scriptNode ) {
+                $headElement->appendChild( $this->importNode( $scriptNode ) );
+            }
+        }
+
+        $headScriptContent = trim( $this->headScriptContent->__toString() );
+
+        if ( ! empty( $headScriptContent ) ) {
+            $scriptElement = $this->createElement( 'script', $headScriptContent );
+            $scriptElement->setAttribute( 'type', 'text/javascript' );
+            $headElement->appendChild( $scriptElement );
+        }
+
         $bodyElement = $this->getElementsByTagName( 'body' )->item( 0 );
 
-        // Insert Script
-        if ( count( $this->scriptNodes ) ) {
-            foreach ( $this->scriptNodes as $scriptNode ) {
+        // Insert Body Script
+        if ( count( $this->bodyScriptNodes ) ) {
+            foreach ( $this->bodyScriptNodes as $scriptNode ) {
                 $bodyElement->appendChild( $this->importNode( $scriptNode ) );
             }
         }
 
-        $scriptContent = trim( $this->scriptContent->__toString() );
+        $bodyScriptContent = trim( $this->bodyScriptContent->__toString() );
 
-        if ( ! empty( $scriptContent ) ) {
-            $scriptElement = $this->createElement( 'script', $scriptContent );
+        if ( ! empty( $bodyScriptContent ) ) {
+            $scriptElement = $this->createElement( 'script', $bodyScriptContent );
             $scriptElement->setAttribute( 'type', 'text/javascript' );
             $bodyElement->appendChild( $scriptElement );
         }
@@ -259,7 +267,7 @@ HTML;
         $output = parent::saveHTML( $node );
 
         if ( $this->formatOutput === true ) {
-            $beautifier = new Beautifier();
+            $beautifier = new Dom\Beautifier();
             $output = $beautifier->format( $output );
         }
 
@@ -275,11 +283,11 @@ HTML;
      *
      * @param string $expression String of document expression.
      *
-     * @return Nodes
+     * @return Dom\Lists\Nodes
      */
     public function find( $expression )
     {
-        $xpath = new XPath( $this );
+        $xpath = new Dom\XPath( $this );
 
         $xpath->registerNamespace( "php", "http://php.net/xpath" );
         $xpath->registerPhpFunctions();
@@ -301,21 +309,23 @@ HTML;
     public function importSourceNode( $source )
     {
         $DOMDocument = new self();
-        $DOMDocument->load( $source );
+        $DOMDocument->loadHTML( $source );
 
         $this->metaNodes->import( $DOMDocument->metaNodes );
-        $this->scriptNodes->import( $DOMDocument->scriptNodes );
+        $this->headScriptNodes->import( $DOMDocument->headScriptNodes );
+        $this->bodyScriptNodes->import( $DOMDocument->bodyScriptNodes );
         $this->linkNodes->import( $DOMDocument->linkNodes );
         $this->styleContent->import( $DOMDocument->styleContent );
-        $this->scriptContent->import( $DOMDocument->scriptContent );
+        $this->headScriptContent->import( $DOMDocument->headScriptContent );
+        $this->bodyScriptContent->import( $DOMDocument->bodyScriptContent );
 
         $bodyElement = $DOMDocument->getElementsByTagName( 'body' )->item( 0 );
 
-        if ( $bodyElement->firstChild instanceof Element ) {
+        if ( $bodyElement->firstChild instanceof Dom\Element ) {
             return $bodyElement->firstChild;
         } elseif ( $bodyElement->firstChild instanceof \DOMText ) {
             foreach ( $bodyElement->childNodes as $childNode ) {
-                if ( $childNode instanceof Element ) {
+                if ( $childNode instanceof Dom\Element ) {
                     return $childNode->cloneNode( true );
                     break;
                 }
@@ -419,8 +429,6 @@ HTML;
 
         $source = $this->parseHTML( $source );
 
-        $bodyElement = $this->getElementsByTagName( 'body' )->item( 0 );
-
         $DOMDocument = new \DOMDocument();
         $DOMDocument->formatOutput = true;
         $DOMDocument->preserveWhiteSpace = false;
@@ -437,7 +445,28 @@ HTML;
 
         $DOMDocument->loadHTML( trim( $source ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 
+        $headElement = $this->getElementsByTagName( 'head' )->item( 0 );
+        $bodyElement = $this->getElementsByTagName( 'body' )->item( 0 );
+
+        // Import head attributes
+        if ( null !== ( $sourceHeadElement = $DOMDocument->getElementsByTagName( 'head' )->item( 0 ) ) ) {
+            if ( $sourceHeadElement->attributes->length > 0 ) {
+                foreach ( $sourceHeadElement->attributes as $attribute ) {
+                    $headElement->setAttribute( $attribute->name, $attribute->value );
+                }
+            }
+        }
+
+        // Import body attributes and child nodes
         if ( null !== ( $sourceBodyElement = $DOMDocument->getElementsByTagName( 'body' )->item( 0 ) ) ) {
+            // Import body attributes
+            if ( $sourceBodyElement->attributes->length > 0 ) {
+                foreach ( $sourceBodyElement->attributes as $attribute ) {
+                    $bodyElement->setAttribute( $attribute->name, $attribute->value );
+                }
+            }
+
+            // Import body child nodes
             foreach ( $sourceBodyElement->childNodes as $childNode ) {
                 $childNode = $this->importNode( $childNode, true );
                 $bodyElement->appendChild( $childNode );
@@ -449,36 +478,27 @@ HTML;
 
     // ------------------------------------------------------------------------
 
-    /**
-     * Document::parseHTML
-     *
-     * Parse HTML Source Code.
-     *
-     * @param string $source HTML Source Code.
-     *
-     * @return mixed
-     */
-    private function parseHTML( $source )
+    private function parseSource( $source, $tag = null )
     {
         // Has inline meta tags
         $pattern
             = '
-		  ~<\s*meta\s
-		
-		  # using lookahead to capture type to $1
-		    (?=[^>]*?
-		    \b(?:name|property|http-equiv)\s*=\s*
-		    (?|"\s*([^"]*?)\s*"|\'\s*([^\']*?)\s*\'|
-		    ([^"\'>]*?)(?=\s*/?\s*>|\s\w+\s*=))
-		  )
-		
-		  # capture content to $2
-		  [^>]*?\bcontent\s*=\s*
-		    (?|"\s*([^"]*?)\s*"|\'\s*([^\']*?)\s*\'|
-		    ([^"\'>]*?)(?=\s*/?\s*>|\s\w+\s*=))
-		  [^>]*>
-		
-		  ~ix';
+              ~<\s*meta\s
+            
+              # using lookahead to capture type to $1
+                (?=[^>]*?
+                \b(?:name|property|http-equiv)\s*=\s*
+                (?|"\s*([^"]*?)\s*"|\'\s*([^\']*?)\s*\'|
+                ([^"\'>]*?)(?=\s*/?\s*>|\s\w+\s*=))
+              )
+            
+              # capture content to $2
+              [^>]*?\bcontent\s*=\s*
+                (?|"\s*([^"]*?)\s*"|\'\s*([^\']*?)\s*\'|
+                ([^"\'>]*?)(?=\s*/?\s*>|\s\w+\s*=))
+              [^>]*>
+            
+              ~ix';
 
         if ( preg_match_all( $pattern, $source, $matches ) ) {
             $metaTags = array_combine( array_map( 'strtolower', $matches[ 1 ] ), $matches[ 2 ] );
@@ -497,21 +517,40 @@ HTML;
             if ( isset( $matches[ 2 ] ) ) {
                 foreach ( $matches[ 2 ] as $match ) {
                     if ( strpos( $match, 'src=' ) !== false ) {
-                        $scriptElement = $this->createElement( 'script' );
-                        $scriptXml = simplexml_load_string( str_replace( '>', '/>', $match ) );
+                        if ( preg_match_all( '/\s(.*?)="(.*?)"/', $match, $attributes ) ) {
+                            $scriptElement = $this->createElement( 'script' );
 
-                        foreach ( $scriptXml->attributes() as $name => $value ) {
-                            $scriptElement->setAttribute( $name, $value );
+                            $attributes[ 1 ] = array_map( 'trim', $attributes[ 1 ] );
+                            $attributes[ 2 ] = array_map( 'trim', $attributes[ 2 ] );
+
+                            foreach ( $attributes[ 1 ] as $key => $name ) {
+                                $value = isset( $attributes[ 2 ][ $key ] ) ? $attributes[ 2 ][ $key ] : $name;
+                                $scriptElement->setAttribute( $name, $value );
+                            }
+
+                            if ( strpos( $match, 'defer' ) !== false ) {
+                                $scriptElement->setAttribute( 'defer', 'defer' );
+                            } elseif ( strpos( $match, 'ascync' ) !== false ) {
+                                $scriptElement->setAttribute( 'ascync', 'ascync' );
+                            }
+
+                            if ( $tag === 'head' ) {
+                                $this->headScriptNodes[] = $scriptElement;
+                            } else {
+                                $this->bodyScriptNodes[] = $scriptElement;
+                            }
                         }
-
-                        $this->scriptNodes[] = $scriptElement;
                     }
                 }
             }
 
             if ( isset( $matches[ 3 ] ) ) {
                 foreach ( $matches[ 3 ] as $match ) {
-                    $this->scriptContent[] = trim( $match ) . PHP_EOL;
+                    if ( $tag === 'head' ) {
+                        $this->headScriptContent[] = trim( $match ) . PHP_EOL;
+                    } else {
+                        $this->headScriptContent[] = trim( $match ) . PHP_EOL;
+                    }
                 }
             }
 
@@ -523,14 +562,18 @@ HTML;
             if ( isset( $matches[ 0 ] ) ) {
                 foreach ( $matches[ 0 ] as $match ) {
                     if ( strpos( $match, 'href=' ) !== false ) {
-                        $linkElement = $this->createElement( 'link' );
-                        $linkXml = simplexml_load_string( str_replace( '>', '/>', $match ) );
+                        if ( preg_match_all( '/\s(.*?)="(.*?)"/', $match, $attributes ) ) {
+                            $linkElement = $this->createElement( 'link' );
 
-                        foreach ( $linkXml->attributes() as $name => $value ) {
-                            $linkElement->setAttribute( $name, $value );
+                            $attributes[ 1 ] = array_map( 'trim', $attributes[ 1 ] );
+                            $attributes[ 2 ] = array_map( 'trim', $attributes[ 2 ] );
+
+                            foreach ( $attributes[ 1 ] as $key => $name ) {
+                                $value = isset( $attributes[ 2 ][ $key ] ) ? $attributes[ 2 ][ $key ] : $name;
+                                $linkElement->setAttribute( $name, $value );
+                            }
+                            $this->linkNodes[] = $linkElement;
                         }
-
-                        $this->linkNodes[] = $linkElement;
                     }
                 }
             }
@@ -553,7 +596,54 @@ HTML;
         $source = preg_replace( '/<!--(.|\s)*?-->/', '', $source );
 
         // Remove blank lines
-        return preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $source );
+        $source = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $source );
+
+        return $source;
+    }
+
+    /**
+     * Document::parseHTML
+     *
+     * Parse HTML Source Code.
+     *
+     * @param string $source HTML Source Code.
+     *
+     * @return mixed
+     */
+    private function parseHTML( $source )
+    {
+        foreach ( [ 'head', 'body' ] as $tag ) {
+            if ( preg_match( "/<$tag.*?>([\w\W]*?)(<\/$tag>)/", $source, $matches ) ) {
+
+                $replaceSource = $parseSource = $matches[ 1 ];
+                $parseSource = $this->parseSource( $parseSource, $tag );
+
+                $source = @str_replace( $replaceSource, $parseSource, $source );
+            }
+        }
+
+        // Parse Code
+        if ( preg_match_all( "/<code.*?>([\w\W]*?)(<\/code>)/", $source, $matches ) ) {
+            if ( ! empty( $matches[ 1 ] ) ) {
+                foreach ( $matches[ 1 ] as $match ) {
+                    $replaceSource = $parseSource = $match;
+
+                    $beautifier = new Dom\Beautifier();
+
+                    $parseSource = $beautifier->format( str_replace( ["\n", "\r\n"], '', $parseSource ) );
+
+                    $parseSource = str_replace( [ '{{php', '/php}}' ], [ '<?php', '?>' ], $parseSource );
+
+                    $parseSource = htmlentities( $parseSource );
+                    $parseSource = htmlspecialchars( htmlspecialchars_decode( $parseSource, ENT_QUOTES ), ENT_QUOTES,
+                        'UTF-8' );
+
+                    $source = @str_replace( $replaceSource, $parseSource, $source );
+                }
+            }
+        }
+
+        return $this->parseSource( $source );
     }
 
     // ------------------------------------------------------------------------
