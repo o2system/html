@@ -1,7 +1,7 @@
 # O2System Html
 Open Source PHP HTML Document and Elements Library.
 
-### Composer Instalation
+### Composer Installation
 The best way to install O2System Html is to use [Composer](https://getcomposer.org)
 ```
 composer require o2system/html --prefer-dist dev-master
