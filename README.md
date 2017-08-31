@@ -1,10 +1,26 @@
 # O2System Html
-Open Source PHP HTML Document and Elements Library.
+O2System HTML is an Open Source PHP HTML Document and Elements Validator, Processor and Generator Library.
+
+### Supported Doctype Declaration (DTD) 
+- HTML5
+- HTML 4.01 Strict
+- HTML 4.01 Transitional
+- HTML 4.01 Frameset
+- XHTML 1.0 Strict
+- XHTML 1.0 Transitional
+- XHTML 1.0 Frameset
+- XHTML 1.1
+
+### Dom Features
+- Featured with jQuery alike HTML dom manipulation.
+- Automatically collect styles and scripts and place them in the HTML document in the right way.
+- HTML Beautifier
+- Extended Dom Element Object.
 
 ### Composer Installation
 The best way to install O2System Html is to use [Composer](https://getcomposer.org)
 ```
-composer require o2system/html --prefer-dist dev-master
+composer require o2system/html
 ```
 > Packagist: [https://packagist.org/packages/o2system/html](https://packagist.org/packages/o2system/html)
 
