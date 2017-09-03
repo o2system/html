@@ -257,7 +257,7 @@ class Attributes extends AbstractVariableStoragePattern
                             $value = $value === true ? 'true' : 'false';
                         }
 
-                        if ( in_array( $key, [ 'controls', 'disabled', 'readonly', 'autocomplete', 'checked' ] ) ) {
+                        if ( in_array( $key, [ 'controls', 'disabled', 'readonly', 'autocomplete', 'checked', 'loop', 'autoplay', 'muted' ] ) ) {
                             $output .= ' ' . $key;
                         } else {
                             $output .= ' ' . $key . '="' . $value . '"';
