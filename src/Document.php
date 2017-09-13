@@ -70,6 +70,13 @@ class Document extends \DOMDocument
      */
     public $bodyScriptContent;
 
+    /**
+     * Document Code Content
+     *
+     * @var array
+     */
+    public $codeScriptContent = [];
+
     // ------------------------------------------------------------------------
 
     /**
@@ -271,7 +278,15 @@ HTML;
             $output = $beautifier->format( $output );
         }
 
-        return trim( $output );
+        if( count( $this->codeScriptContent ) ) {
+            $output = str_replace(
+                array_keys( $this->codeScriptContent ),
+                array_values( $this->codeScriptContent),
+                $output
+            );
+        }
+
+        return $output;
     }
 
     // ------------------------------------------------------------------------
@@ -628,17 +643,16 @@ HTML;
                 foreach ( $matches[ 1 ] as $match ) {
                     $replaceSource = $parseSource = $match;
 
-                    $beautifier = new Dom\Beautifier();
-
-                    $parseSource = $beautifier->format( str_replace( ["\n", "\r\n"], '', $parseSource ) );
-
                     $parseSource = str_replace( [ '{{php', '/php}}' ], [ '<?php', '?>' ], $parseSource );
 
                     $parseSource = htmlentities( $parseSource );
                     $parseSource = htmlspecialchars( htmlspecialchars_decode( $parseSource, ENT_QUOTES ), ENT_QUOTES,
                         'UTF-8' );
 
-                    $source = @str_replace( $replaceSource, $parseSource, $source );
+                    $replaceSourceKey = '::CODE::' . md5($parseSource) . '::CODE::';
+                    $this->codeScriptContent[ $replaceSourceKey ] = $parseSource;
+
+                    $source = @str_replace( $replaceSource, $replaceSourceKey, $source );
                 }
             }
         }
