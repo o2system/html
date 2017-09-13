@@ -279,11 +279,9 @@ HTML;
         }
 
         if( count( $this->codeScriptContent ) ) {
-            $output = str_replace(
-                array_keys( $this->codeScriptContent ),
-                array_values( $this->codeScriptContent),
-                $output
-            );
+            foreach( $this->codeScriptContent as $codeKey => $codeContent ) {
+                $output = str_replace( $codeKey, $codeContent, $output );
+            }
         }
 
         return $output;
@@ -458,7 +456,7 @@ HTML;
             $DOMDocument->encoding = 'UTF-8';
         }
 
-        $DOMDocument->loadHTML( trim( $source ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+        $DOMDocument->loadHTML( $source, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 
         $headElement = $this->getElementsByTagName( 'head' )->item( 0 );
         $bodyElement = $this->getElementsByTagName( 'body' )->item( 0 );
@@ -607,12 +605,6 @@ HTML;
             $source = preg_replace( '#<style(.*?)>(.*?)</style>#is', '', $source );
         }
 
-        // Remove html comments
-        $source = preg_replace( '/<!--(.|\s)*?-->/', '', $source );
-
-        // Remove blank lines
-        $source = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $source );
-
         return $source;
     }
 
@@ -639,20 +631,17 @@ HTML;
 
         // Parse Code
         if ( preg_match_all( "/<code.*?>([\w\W]*?)(<\/code>)/", $source, $matches ) ) {
-            if ( ! empty( $matches[ 1 ] ) ) {
-                foreach ( $matches[ 1 ] as $match ) {
+            if ( ! empty( $matches[ 0 ] ) ) {
+                foreach ( $matches[ 0 ] as $match ) {
                     $replaceSource = $parseSource = $match;
 
                     $parseSource = str_replace( [ '{{php', '/php}}' ], [ '<?php', '?>' ], $parseSource );
+                    $parseSource = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", $parseSource);
 
-                    $parseSource = htmlentities( $parseSource );
-                    $parseSource = htmlspecialchars( htmlspecialchars_decode( $parseSource, ENT_QUOTES ), ENT_QUOTES,
-                        'UTF-8' );
-
-                    $replaceSourceKey = '::CODE::' . md5($parseSource) . '::CODE::';
+                    $replaceSourceKey = '::CODE::' . uniqid() . '::CODE::';
                     $this->codeScriptContent[ $replaceSourceKey ] = $parseSource;
 
-                    $source = @str_replace( $replaceSource, $replaceSourceKey, $source );
+                    $source = str_replace( $replaceSource, $replaceSourceKey, $source );
                 }
             }
         }
