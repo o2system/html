@@ -15,7 +15,7 @@ namespace O2System\Html\Dom;
 // ------------------------------------------------------------------------
 
 /**
- * Class FormatOutput
+ * Class Beautifier
  *
  * @package O2System\HTML\DOM
  */
