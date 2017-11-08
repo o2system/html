@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Dom;
@@ -15,6 +16,7 @@ namespace O2System\Html\Dom;
 // ------------------------------------------------------------------------
 
 use O2System\Html\Document;
+use O2System\Spl\Exceptions\Logic\InvalidArgumentException;
 
 /**
  * Class Element
@@ -29,13 +31,12 @@ class Element extends \DOMElement
      * @param string $name The name of the property
      *
      * @return string The value of the property specified
-     * @throws \InvalidArgumentException
-     * @throws \Exception
+     * @throws InvalidArgumentException
      */
     public function __get( $name )
     {
         if ( ! is_string( $name ) ) {
-            throw new \InvalidArgumentException( 'The name argument must be of type string' );
+            throw new InvalidArgumentException( 'HTML_E_INVALID_ARGUMENT', 0, [ 'string' ] );
         }
         if ( $name === 'innerHTML' ) {
             $html = $this->ownerDocument->saveHTML( $this );
@@ -45,7 +46,7 @@ class Element extends \DOMElement
         } elseif ( $name === 'outerHTML' ) {
             return $this->ownerDocument->saveHTML( $this );
         } else {
-            throw new \Exception( 'Undefined property: HTMLDOMElement::$' . $name );
+            throw new InvalidArgumentException( 'HTML_E_INVALID_ARGUMENT', 0, [ 'HTMLDOMElement::$' . $name ] );
         }
     }
 
@@ -62,11 +63,11 @@ class Element extends \DOMElement
     public function __set( $name, $value )
     {
         if ( ! is_string( $name ) ) {
-            throw new \InvalidArgumentException( 'The name argument must be of type string' );
+            throw new InvalidArgumentException( 'HTML_E_INVALID_ARGUMENT', 0, [ 'string' ] );
         }
 
         if ( ! is_string( $value ) ) {
-            throw new \InvalidArgumentException( 'The value argument must be of type string' );
+            throw new InvalidArgumentException( 'HTML_E_INVALID_ARGUMENT', 0, [ 'string' ] );
         }
 
         if ( $name === 'innerHTML' ) {

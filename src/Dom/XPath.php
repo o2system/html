@@ -201,7 +201,7 @@ class XPath extends \DOMXPath
             return sprintf( '@*[%s]', implode( ' or ', $attributes ) );
         }
 
-        throw new RuntimeException( 'Invalid selector: unknown property type' );
+        throw new RuntimeException( 'HTML_E_INVALID_CSS_PROPERTY' );
     }
 
     // ------------------------------------------------------------------------
@@ -223,7 +223,7 @@ class XPath extends \DOMXPath
         $selector = trim( $selector );
 
         if ( $selector === '' ) {
-            throw new InvalidArgumentException( 'The selector must not be empty' );
+            throw new InvalidArgumentException( 'HTML_E_INVALID_SELECTOR' );
         }
 
         $tag = '(?P<tag>[\*|\w|\-]+)?';
@@ -239,7 +239,7 @@ class XPath extends \DOMXPath
 
         if ( preg_match( $regexp, $selector, $segments ) ) {
             if ( $segments[ 0 ] === '' ) {
-                throw new RuntimeException( 'Invalid selector' );
+                throw new RuntimeException( 'HTML_E_INVALID_SELECTOR' );
             }
 
             $result[ 'selector' ] = $segments[ 0 ];
@@ -294,7 +294,7 @@ class XPath extends \DOMXPath
             return $result;
         }
 
-        throw new RuntimeException( 'Invalid selector' );
+        throw new RuntimeException( 'HTML_E_INVALID_SELECTOR' );
     }
 
     // ------------------------------------------------------------------------

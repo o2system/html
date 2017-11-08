@@ -89,6 +89,10 @@ class Document extends \DOMDocument
      */
     public function __construct( $version = '1.0', $encoding = 'UTF-8' )
     {
+        language()
+            ->addFilePath( __DIR__ . DIRECTORY_SEPARATOR )
+            ->loadFile( 'html' );
+
         parent::__construct( $version, $encoding );
 
         $this->registerNodeClass( 'DOMElement', '\O2System\Html\Dom\Element' );

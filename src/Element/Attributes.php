@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Element;
@@ -25,7 +26,7 @@ class Attributes extends AbstractVariableStoragePattern
 {
     public function hasAttributeId()
     {
-        return (bool)empty( $this->storage[ 'id' ] ) ? false : true;
+        return (bool) empty( $this->storage[ 'id' ] ) ? false : true;
     }
 
     public function setAttributeId( $id )
@@ -40,20 +41,19 @@ class Attributes extends AbstractVariableStoragePattern
     public function addAttribute( $name, $value )
     {
         if ( $name === 'class' ) {
+            $this->addAttributeClass( $value );
+        } elseif ( $name === 'style' ) {
+            $value = rtrim( $value, ';' ) . ';';
+            $value = explode( ';', $value );
+            $value = array_filter( $value );
 
-            $classes = $value;
-
-            if ( is_string( $classes ) ) {
-                $classes = explode( ',', $classes );
+            foreach ( $value as $style ) {
+                if ( preg_match_all( "/(.*)(: )(.*)/", $style, $match ) ) {
+                    $this->addAttributeStyle( $match[ 1 ][ 0 ], $match[ 3 ][ 0 ] );
+                } elseif ( preg_match_all( "/(.*)(:)(.*)/", $style, $match ) ) {
+                    $this->addAttributeStyle( $match[ 1 ][ 0 ], $match[ 3 ][ 0 ] );
+                }
             }
-            $classes = array_map( 'trim', $classes );
-            $classes = array_filter( $classes );
-
-            if ( ! $this->offsetExists( 'class' ) ) {
-                $this->storage[ 'class' ] = [];
-            }
-
-            $this->storage[ 'class' ] = array_merge( $this->storage[ 'class' ], $classes );
         } elseif ( is_string( $value ) ) {
             $this->storage[ $name ] = trim( $value );
         } else {
@@ -70,7 +70,7 @@ class Attributes extends AbstractVariableStoragePattern
         if ( $name === 'id' ) {
             return empty( $this->storage[ 'id' ] ) ? false : true;
         } elseif ( $name === 'class' ) {
-            return count( $this->storage[ 'class' ] ) == 0 ? false : true;
+            return empty( $this->storage[ 'class' ] ) ? false : true;
         } else {
             return isset( $this->storage[ $name ] );
         }
@@ -164,6 +164,28 @@ class Attributes extends AbstractVariableStoragePattern
         return $this;
     }
 
+    public function addAttributeStyle( $styles, $value = null )
+    {
+        if ( is_string( $styles ) ) {
+            $styles = [ $styles => $value ];
+        }
+
+        if ( ! $this->offsetExists( 'style' ) ) {
+            $this->storage[ 'style' ] = [];
+        }
+
+        foreach ( $styles as $key => $value ) {
+            if ( empty( $value ) ) {
+                continue;
+            }
+            $styles[ trim( $key ) ] = trim( $value );
+        }
+
+        $this->storage[ 'style' ] = array_merge( $this->storage[ 'style' ], $styles );
+
+        return $this;
+    }
+
     public function removeAttributeClass( $classes )
     {
         if ( $this->offsetExists( 'class' ) ) {
@@ -236,6 +258,18 @@ class Attributes extends AbstractVariableStoragePattern
             foreach ( $this->storage as $key => $value ) {
                 $output = trim( $output );
                 switch ( $key ) {
+                    case 'style':
+                        if ( count( $value ) == 0 ) {
+                            continue;
+                        }
+
+                        $output .= 'style="';
+                        foreach ( $value as $styleKey => $styleValue ) {
+                            $output .= $styleKey . ':' . $styleValue . ';';
+                        }
+                        $output .= '"';
+
+                        break;
                     case 'class':
                         if ( count( $value ) == 0 ) {
                             continue;
@@ -257,7 +291,16 @@ class Attributes extends AbstractVariableStoragePattern
                             $value = $value === true ? 'true' : 'false';
                         }
 
-                        if ( in_array( $key, [ 'controls', 'disabled', 'readonly', 'autocomplete', 'checked', 'loop', 'autoplay', 'muted' ] ) ) {
+                        if ( in_array( $key, [
+                            'controls',
+                            'disabled',
+                            'readonly',
+                            'autocomplete',
+                            'checked',
+                            'loop',
+                            'autoplay',
+                            'muted',
+                        ] ) ) {
                             $output .= ' ' . $key;
                         } else {
                             $output .= ' ' . $key . '="' . $value . '"';
