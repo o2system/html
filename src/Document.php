@@ -70,13 +70,6 @@ class Document extends \DOMDocument
      */
     public $bodyScriptContent;
 
-    /**
-     * Document Code Content
-     *
-     * @var array
-     */
-    public $codeScriptContent = [];
-
     // ------------------------------------------------------------------------
 
     /**
@@ -280,12 +273,6 @@ HTML;
         if ( $this->formatOutput === true ) {
             $beautifier = new Dom\Beautifier();
             $output = $beautifier->format( $output );
-        }
-
-        if( count( $this->codeScriptContent ) ) {
-            foreach( $this->codeScriptContent as $codeKey => $codeContent ) {
-                $output = str_replace( $codeKey, $codeContent, $output );
-            }
         }
 
         return $output;
@@ -634,18 +621,15 @@ HTML;
         }
 
         // Parse Code
-        if ( preg_match_all( "/<code.*?>([\w\W]*?)(<\/code>)/", $source, $matches ) ) {
-            if ( ! empty( $matches[ 0 ] ) ) {
-                foreach ( $matches[ 0 ] as $match ) {
+        if ( preg_match_all( "#<\s*?code\b[^>]*>(.*?)</code\b[^>]*>#s", $source, $matches ) ) {
+            if ( ! empty( $matches[ 1 ] ) ) {
+                foreach ( $matches[ 1 ] as $match ) {
                     $replaceSource = $parseSource = $match;
 
                     $parseSource = str_replace( [ '{{php', '/php}}' ], [ '<?php', '?>' ], $parseSource );
                     $parseSource = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", $parseSource);
 
-                    $replaceSourceKey = '::CODE::' . uniqid() . '::CODE::';
-                    $this->codeScriptContent[ $replaceSourceKey ] = $parseSource;
-
-                    $source = str_replace( $replaceSource, $replaceSourceKey, $source );
+                    $source = str_replace( $replaceSource, htmlentities( $parseSource ), $source );
                 }
             }
         }
