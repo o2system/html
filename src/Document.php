@@ -275,7 +275,7 @@ HTML;
             $output = $beautifier->format( $output );
         }
 
-        return $output;
+        return (string) $output;
     }
 
     // ------------------------------------------------------------------------
@@ -445,6 +445,10 @@ HTML;
             }
 
             $DOMDocument->encoding = 'UTF-8';
+        }
+
+        if(empty($source)) {
+            return false;
         }
 
         $DOMDocument->loadHTML( $source, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
