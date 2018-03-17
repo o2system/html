@@ -523,8 +523,14 @@ HTML;
         // Has inline script Element
         if ( preg_match_all( '/((<[\\s\\/]*script\\b[^>]*>)([^>]*)(<\\/script>))/', $source, $matches ) ) {
             if ( isset( $matches[ 2 ] ) ) {
-                foreach ( $matches[ 2 ] as $match ) {
-                    if ( strpos( $match, 'src=' ) !== false ) {
+                foreach ( $matches[ 2 ] as $key => $match ) {
+                    if ( strpos( $match, 'type="application/ld+json"' ) !== false ) {
+                        $scriptElement = $this->createElement( 'script' );
+                        $scriptElement->setAttribute( 'type', 'application/ld+json' );
+                        $scriptElement->textContent = $matches[3][$key];
+                        $this->headScriptNodes[] = $scriptElement;
+                        unset($matches[3][$key]);
+                    } elseif ( strpos( $match, 'src=' ) !== false ) {
                         if ( preg_match_all( '/\s(.*?)="(.*?)"/', $match, $attributes ) ) {
                             $scriptElement = $this->createElement( 'script' );
 
@@ -533,13 +539,20 @@ HTML;
 
                             foreach ( $attributes[ 1 ] as $key => $name ) {
                                 $value = isset( $attributes[ 2 ][ $key ] ) ? $attributes[ 2 ][ $key ] : $name;
-                                $scriptElement->setAttribute( $name, $value );
-                            }
 
-                            if ( strpos( $match, 'defer' ) !== false ) {
-                                $scriptElement->setAttribute( 'defer', 'defer' );
-                            } elseif ( strpos( $match, 'ascync' ) !== false ) {
-                                $scriptElement->setAttribute( 'ascync', 'ascync' );
+                                if( strpos( $name, 'async defer' ) !== false ) {
+                                    $scriptElement->setAttribute( 'async', null );
+                                    $scriptElement->setAttribute( 'defer', null );
+                                    $scriptElement->setAttribute('scr', $value);
+                                } elseif(strpos( $name, 'async' ) !== false) {
+                                    $scriptElement->setAttribute( 'async', null );
+                                    $scriptElement->setAttribute('scr', $value);
+                                } elseif( strpos( $name, 'defer' ) !== false ) {
+                                    $scriptElement->setAttribute( 'defer', null );
+                                    $scriptElement->setAttribute('scr', $value);
+                                } else {
+                                    $scriptElement->setAttribute( $name, $value );
+                                }
                             }
 
                             if ( $tag === 'head' ) {
