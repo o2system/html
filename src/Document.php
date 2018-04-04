@@ -520,7 +520,16 @@ HTML;
             $source = preg_replace( '#<meta(.*?)>#is', '', $source );
         }
 
-        // Has inline script Element
+        if ( preg_match_all( '#<script(.*?)>(.*?)</script>#is', $source, $matches ) ) {
+            if ( isset( $matches[ 2 ] ) ) {
+                foreach ( $matches[ 2 ] as $match ) {
+                    if(!empty($match)) {
+                        $this->bodyScriptContent[] = trim( $match ) . PHP_EOL;
+                    }
+                }
+            }
+        }
+
         if ( preg_match_all( '/((<[\\s\\/]*script\\b[^>]*>)([^>]*)(<\\/script>))/', $source, $matches ) ) {
             if ( isset( $matches[ 2 ] ) ) {
                 foreach ( $matches[ 2 ] as $key => $match ) {
@@ -541,14 +550,14 @@ HTML;
                                 $value = isset( $attributes[ 2 ][ $key ] ) ? $attributes[ 2 ][ $key ] : $name;
 
                                 if( strpos( $name, 'async defer' ) !== false ) {
-                                    $scriptElement->setAttribute( 'async', null );
-                                    $scriptElement->setAttribute( 'defer', null );
+                                    $scriptElement->setAttribute( 'async', "async" );
+                                    $scriptElement->setAttribute( 'defer', "defer" );
                                     $scriptElement->setAttribute('scr', $value);
                                 } elseif(strpos( $name, 'async' ) !== false) {
-                                    $scriptElement->setAttribute( 'async', null );
+                                    $scriptElement->setAttribute( 'async', "async" );
                                     $scriptElement->setAttribute('scr', $value);
                                 } elseif( strpos( $name, 'defer' ) !== false ) {
-                                    $scriptElement->setAttribute( 'defer', null );
+                                    $scriptElement->setAttribute( 'defer', "defer" );
                                     $scriptElement->setAttribute('scr', $value);
                                 } else {
                                     $scriptElement->setAttribute( $name, $value );
