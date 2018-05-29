@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Dom;
@@ -108,18 +109,18 @@ class Beautifier
      * @param string $elementName
      * @param int    $type FormatOutput::ELEMENT_TYPE_BLOCK | FormatOutput::ELEMENT_TYPE_INLINE
      */
-    public function setElementType( $elementName, $type )
+    public function setElementType($elementName, $type)
     {
-        if ( $type === static::ELEMENT_TYPE_BLOCK ) {
-            $this->inlineElements = array_diff( $this->inlineElements, [ $elementName ] );
+        if ($type === static::ELEMENT_TYPE_BLOCK) {
+            $this->inlineElements = array_diff($this->inlineElements, [$elementName]);
         } else {
-            if ( $type === static::ELEMENT_TYPE_INLINE ) {
+            if ($type === static::ELEMENT_TYPE_INLINE) {
                 $this->inlineElements[] = $elementName;
             }
         }
 
-        if ( $this->inlineElements ) {
-            $this->inlineElements = array_unique( $this->inlineElements );
+        if ($this->inlineElements) {
+            $this->inlineElements = array_unique($this->inlineElements);
         }
     }
 
@@ -132,37 +133,37 @@ class Beautifier
      *
      * @return string
      */
-    public function format( $source )
+    public function format($source)
     {
         // We does not indent <script> body. Instead, it temporary removes it from the code, indents the input, and restores the script body.
         $tempScriptElements = [];
 
-        if ( preg_match_all( '/<script\b[^>]*>([\s\S]*?)<\/script>/mi', $source, $matches ) ) {
+        if (preg_match_all('/<script\b[^>]*>([\s\S]*?)<\/script>/mi', $source, $matches)) {
             $tempScriptElements = $matches[ 0 ];
 
-            foreach ( $matches[ 0 ] as $i => $match ) {
-                $source = str_replace( $match, '<script>' . ( $i + 1 ) . '</script>', $source );
+            foreach ($matches[ 0 ] as $i => $match) {
+                $source = str_replace($match, '<script>' . ($i + 1) . '</script>', $source);
             }
         }
 
         // Removing double whitespaces to make the source code easier to read.
         // With exception of <pre>/ CSS white-space changing the default behaviour, double whitespace is meaningless in HTML output.
         // This reason alone is sufficient not to use indentation in production.
-        $source = str_replace( "\t", '', $source );
-        $source = preg_replace( '/\s{2,}/', ' ', $source );
+        $source = str_replace("\t", '', $source);
+        $source = preg_replace('/\s{2,}/', ' ', $source);
 
         // Remove inline elements and replace them with text entities.
         $tempInlineElements = [];
 
-        if ( preg_match_all(
-            '/<(' . implode( '|', $this->inlineElements ) . ')[^>]*>(?:[^<]*)<\/\1>/',
+        if (preg_match_all(
+            '/<(' . implode('|', $this->inlineElements) . ')[^>]*>(?:[^<]*)<\/\1>/',
             $source,
             $matches
-        ) ) {
+        )) {
             $tempInlineElements = $matches[ 0 ];
 
-            foreach ( $matches[ 0 ] as $i => $match ) {
-                $source = str_replace( $match, 'ᐃ' . ( $i + 1 ) . 'ᐃ', $source );
+            foreach ($matches[ 0 ] as $i => $match) {
+                $source = str_replace($match, 'ᐃ' . ($i + 1) . 'ᐃ', $source);
             }
         }
 
@@ -192,22 +193,22 @@ class Beautifier
                 '/([^<]+)/'                                    => static::MATCH_INDENT_NO,
             ];
 
-            foreach ( $patterns as $pattern => $rule ) {
-                if ( $match = preg_match( $pattern, $source, $matches ) ) {
-                    if ( function_exists( 'mb_substr' ) ) {
-                        $source = mb_substr( $source, mb_strlen( $matches[ 0 ] ) );
+            foreach ($patterns as $pattern => $rule) {
+                if ($match = preg_match($pattern, $source, $matches)) {
+                    if (function_exists('mb_substr')) {
+                        $source = mb_substr($source, mb_strlen($matches[ 0 ]));
                     } else {
-                        $source = substr( $source, strlen( $matches[ 0 ] ) );
+                        $source = substr($source, strlen($matches[ 0 ]));
                     }
 
-                    if ( $rule === static::MATCH_DISCARD ) {
+                    if ($rule === static::MATCH_DISCARD) {
                         break;
                     }
 
-                    if ( $rule === static::MATCH_INDENT_NO ) {
+                    if ($rule === static::MATCH_INDENT_NO) {
 
                     } else {
-                        if ( $rule === static::MATCH_INDENT_DECREASE ) {
+                        if ($rule === static::MATCH_INDENT_DECREASE) {
                             $nextLineIndentationLevel--;
                             $indentationLevel--;
                         } else {
@@ -215,27 +216,27 @@ class Beautifier
                         }
                     }
 
-                    if ( $indentationLevel < 0 ) {
+                    if ($indentationLevel < 0) {
                         $indentationLevel = 0;
                     }
 
-                    $output .= str_repeat( $this->indentCharacter, $indentationLevel ) . $matches[ 0 ] . "\n";
+                    $output .= str_repeat($this->indentCharacter, $indentationLevel) . $matches[ 0 ] . "\n";
 
                     break;
                 }
             }
-        } while ( $match );
+        } while ($match);
 
-        $output = preg_replace( '/(<(\w+)[^>]*>)\s*(<\/\2>)/', '\\1\\3', $output );
+        $output = preg_replace('/(<(\w+)[^>]*>)\s*(<\/\2>)/', '\\1\\3', $output);
 
-        foreach ( $tempScriptElements as $i => $original ) {
-            $output = str_replace( '<script>' . ( $i + 1 ) . '</script>', $original, $output );
+        foreach ($tempScriptElements as $i => $original) {
+            $output = str_replace('<script>' . ($i + 1) . '</script>', $original, $output);
         }
 
-        foreach ( $tempInlineElements as $i => $original ) {
-            $output = str_replace( 'ᐃ' . ( $i + 1 ) . 'ᐃ', $original, $output );
+        foreach ($tempInlineElements as $i => $original) {
+            $output = str_replace('ᐃ' . ($i + 1) . 'ᐃ', $original, $output);
         }
 
-        return trim( $output );
+        return trim($output);
     }
 }

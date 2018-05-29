@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Dom\Lists;
@@ -35,7 +36,7 @@ class Asset extends \ArrayIterator
      *
      * @param \O2System\Html\Document $ownerDocument
      */
-    public function __construct( Document $ownerDocument )
+    public function __construct(Document $ownerDocument)
     {
         $this->ownerDocument =& $ownerDocument;
     }
@@ -49,11 +50,11 @@ class Asset extends \ArrayIterator
      *
      * @return static
      */
-    public function import( Asset $assetNodes )
+    public function import(Asset $assetNodes)
     {
-        if ( is_array( $assetNodes = $assetNodes->getArrayCopy() ) ) {
-            foreach ( $assetNodes as $name => $value ) {
-                $this->offsetSet( $name, $value );
+        if (is_array($assetNodes = $assetNodes->getArrayCopy())) {
+            foreach ($assetNodes as $name => $value) {
+                $this->offsetSet($name, $value);
             }
         }
 
@@ -68,15 +69,15 @@ class Asset extends \ArrayIterator
      * @param string $name
      * @param string $value
      */
-    public function offsetSet( $name, $value )
+    public function offsetSet($name, $value)
     {
-        if ( $value instanceof Element ) {
-            parent::offsetSet( $name, $value );
+        if ($value instanceof Element) {
+            parent::offsetSet($name, $value);
         } else {
-            $meta = $this->ownerDocument->createElement( $this->element );
-            $meta->setAttribute( $name, $value );
+            $meta = $this->ownerDocument->createElement($this->element);
+            $meta->setAttribute($name, $value);
 
-            parent::offsetSet( $name, $meta );
+            parent::offsetSet($name, $meta);
         }
     }
 
@@ -90,12 +91,12 @@ class Asset extends \ArrayIterator
      *
      * @return \DOMElement
      */
-    public function createElement( $name, $value )
+    public function createElement($name, $value)
     {
-        $meta = $this->ownerDocument->createElement( $this->element );
-        $meta->setAttribute( $name, $value );
+        $meta = $this->ownerDocument->createElement($this->element);
+        $meta->setAttribute($name, $value);
 
-        parent::offsetSet( $name, $meta );
+        parent::offsetSet($name, $meta);
 
         return $meta;
     }

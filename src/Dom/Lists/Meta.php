@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Dom\Lists;
@@ -33,7 +34,7 @@ class Meta extends \ArrayIterator
      *
      * @param \O2System\Html\Document $ownerDocument
      */
-    public function __construct( Document $ownerDocument )
+    public function __construct(Document $ownerDocument)
     {
         $this->ownerDocument =& $ownerDocument;
     }
@@ -47,11 +48,11 @@ class Meta extends \ArrayIterator
      *
      * @return $this
      */
-    public function import( Meta $metaNodes )
+    public function import(Meta $metaNodes)
     {
-        if ( is_array( $metaNodes = $metaNodes->getArrayCopy() ) ) {
-            foreach ( $metaNodes as $name => $value ) {
-                $this->offsetSet( $name, $value );
+        if (is_array($metaNodes = $metaNodes->getArrayCopy())) {
+            foreach ($metaNodes as $name => $value) {
+                $this->offsetSet($name, $value);
             }
         }
 
@@ -66,15 +67,15 @@ class Meta extends \ArrayIterator
      * @param string $name
      * @param string $value
      */
-    public function offsetSet( $name, $value )
+    public function offsetSet($name, $value)
     {
-        if ( $value instanceof Element ) {
-            parent::offsetSet( $name, $value );
+        if ($value instanceof Element) {
+            parent::offsetSet($name, $value);
         } else {
-            $meta = $this->ownerDocument->createElement( 'meta' );
-            $meta->setAttribute( $name, $value );
+            $meta = $this->ownerDocument->createElement('meta');
+            $meta->setAttribute($name, $value);
 
-            parent::offsetSet( $name, $meta );
+            parent::offsetSet($name, $meta);
         }
     }
 
@@ -87,13 +88,13 @@ class Meta extends \ArrayIterator
      *
      * @return \DOMElement
      */
-    public function createElement( array $attributes )
+    public function createElement(array $attributes)
     {
-        $meta = $this->ownerDocument->createElement( 'meta' );
+        $meta = $this->ownerDocument->createElement('meta');
 
         $name = null;
-        foreach ( $attributes as $key => $value ) {
-            $meta->setAttribute( $key, $value );
+        foreach ($attributes as $key => $value) {
+            $meta->setAttribute($key, $value);
         }
 
         $this[] = $meta;

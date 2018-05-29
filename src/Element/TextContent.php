@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Element;
@@ -23,20 +24,20 @@ use O2System\Spl\Iterators\ArrayIterator;
  */
 class TextContent extends ArrayIterator
 {
-    public function replace( $value )
+    public function replace($value)
     {
         return $this->exchangeArray([
-            $value
+            $value,
         ]);
     }
 
-    public function item( $index )
+    public function item($index)
     {
-        return $this->offsetGet( $index );
+        return $this->offsetGet($index);
     }
 
-    public function prepend( $value )
+    public function prepend($value)
     {
-        parent::unshift( $value );
+        parent::unshift($value);
     }
 }

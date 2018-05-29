@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html;
@@ -35,12 +36,12 @@ class Element
     public $childNodes;
     public $metadata;
 
-    public function __construct( $tagName, $entityName = null )
+    public function __construct($tagName, $entityName = null)
     {
-        $this->tagName = trim( $tagName );
+        $this->tagName = trim($tagName);
 
         $this->entity = new Entity();
-        $this->entity->setEntityName( $entityName );
+        $this->entity->setEntityName($entityName);
 
         $this->attributes = new Attributes();
         $this->textContent = new TextContent();
@@ -51,72 +52,29 @@ class Element
     public function __clone()
     {
         $newElement = $this;
-        $reflection = new \ReflectionClass( $this );
+        $reflection = new \ReflectionClass($this);
 
-        foreach ( $reflection->getProperties( \ReflectionProperty::IS_PUBLIC ) as $property ) {
-            $value = $property->getValue( $newElement );
+        foreach ($reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
+            $value = $property->getValue($newElement);
 
-            if ( is_object( $value ) ) {
-                if( $value instanceof ArrayIterator ) {
-                    $value = new ArrayIterator( $value->getArrayCopy() );
-                    $property->setValue( $newElement, $value );
+            if (is_object($value)) {
+                if ($value instanceof ArrayIterator) {
+                    $value = new ArrayIterator($value->getArrayCopy());
+                    $property->setValue($newElement, $value);
                 } else {
-                    $property->setValue( $newElement, clone $value );
+                    $property->setValue($newElement, clone $value);
                 }
             } else {
-                $property->setValue( $newElement, $value );
+                $property->setValue($newElement, $value);
             }
         }
 
         return $newElement;
     }
 
-    public function hasAttributes()
+    public function __toString()
     {
-        return (bool) ( $this->attributes->count() == 0 ? false : true );
-    }
-
-    public function hasTextContent()
-    {
-        return (bool) ( $this->textContent->count() == 0 ? false : true );
-    }
-
-    public function hasChildNodes()
-    {
-        return (bool) ( $this->childNodes->count() == 0 ? false : true );
-    }
-
-    /**
-     * Tag Open Method
-     *
-     * @access public
-     *
-     * @return string
-     */
-    public function open()
-    {
-        $attr = $this->attributes;
-        unset( $attr[ 'realpath' ] );
-
-        if( $this->hasAttributes() ) {
-            return '<' . $this->tagName . ' ' . trim( $this->attributes->__toString() ) . '>';
-        }
-
-        return '<' . $this->tagName . '>';
-    }
-
-    // ------------------------------------------------------------------------
-
-    /**
-     * Tag Close Method
-     *
-     * @access public
-     *
-     * @return string
-     */
-    public function close()
-    {
-        return '</' . $this->tagName . '>';
+        return $this->render();
     }
 
     public function render()
@@ -140,28 +98,28 @@ class Element
             'wbr',
         ];
 
-        if ( in_array( $this->tagName, $selfClosingTags ) ) {
+        if (in_array($this->tagName, $selfClosingTags)) {
             $attr = $this->attributes;
-            unset( $attr[ 'realpath' ] );
+            unset($attr[ 'realpath' ]);
 
-            if( $this->hasAttributes() ) {
-                return '<' . $this->tagName . ' ' . trim( $this->attributes->__toString() ) . '>';
+            if ($this->hasAttributes()) {
+                return '<' . $this->tagName . ' ' . trim($this->attributes->__toString()) . '>';
             }
 
             return '<' . $this->tagName . '>';
         } else {
             $output[] = $this->open();
 
-            if( $this->hasTextContent() ) {
-                $output[] = PHP_EOL . implode( '', $this->textContent->getArrayCopy() ) . PHP_EOL;
+            if ($this->hasTextContent()) {
+                $output[] = PHP_EOL . implode('', $this->textContent->getArrayCopy()) . PHP_EOL;
             }
 
-            if( $this->hasChildNodes() ) {
-                if( ! $this->hasTextContent() ) {
+            if ($this->hasChildNodes()) {
+                if ( ! $this->hasTextContent()) {
                     $output[] = PHP_EOL;
                 }
 
-                foreach( $this->childNodes as $childNode ) {
+                foreach ($this->childNodes as $childNode) {
                     $output[] = $childNode . PHP_EOL;
                 }
             }
@@ -169,11 +127,54 @@ class Element
 
         $output[] = $this->close();
 
-        return implode( '', $output );
+        return implode('', $output);
     }
 
-    public function __toString()
+    public function hasAttributes()
     {
-        return $this->render();
+        return (bool)($this->attributes->count() == 0 ? false : true);
+    }
+
+    /**
+     * Tag Open Method
+     *
+     * @access public
+     *
+     * @return string
+     */
+    public function open()
+    {
+        $attr = $this->attributes;
+        unset($attr[ 'realpath' ]);
+
+        if ($this->hasAttributes()) {
+            return '<' . $this->tagName . ' ' . trim($this->attributes->__toString()) . '>';
+        }
+
+        return '<' . $this->tagName . '>';
+    }
+
+    // ------------------------------------------------------------------------
+
+    public function hasTextContent()
+    {
+        return (bool)($this->textContent->count() == 0 ? false : true);
+    }
+
+    public function hasChildNodes()
+    {
+        return (bool)($this->childNodes->count() == 0 ? false : true);
+    }
+
+    /**
+     * Tag Close Method
+     *
+     * @access public
+     *
+     * @return string
+     */
+    public function close()
+    {
+        return '</' . $this->tagName . '>';
     }
 }

@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Dom;
@@ -26,10 +27,10 @@ class Style extends \ArrayIterator
      *
      * @param \O2System\Html\Dom\Style $style
      */
-    public function import( Style $style )
+    public function import(Style $style)
     {
-        foreach ( $style->getArrayCopy() as $styleTextContent ) {
-            $this->append( $styleTextContent );
+        foreach ($style->getArrayCopy() as $styleTextContent) {
+            $this->append($styleTextContent);
         }
     }
 
@@ -41,12 +42,12 @@ class Style extends \ArrayIterator
      * @param string $offset
      * @param string $value
      */
-    public function offsetSet( $offset, $value )
+    public function offsetSet($offset, $value)
     {
-        $value = trim( $value );
+        $value = trim($value);
 
-        if ( ! empty( $value ) ) {
-            parent::offsetSet( $offset, $value );
+        if ( ! empty($value)) {
+            parent::offsetSet($offset, $value);
         }
     }
 
@@ -59,6 +60,6 @@ class Style extends \ArrayIterator
      */
     public function __toString()
     {
-        return PHP_EOL . implode( PHP_EOL, $this->getArrayCopy() ) . PHP_EOL;
+        return PHP_EOL . implode(PHP_EOL, $this->getArrayCopy()) . PHP_EOL;
     }
 }

@@ -33,20 +33,20 @@ class Element extends \DOMElement
      * @return string The value of the property specified
      * @throws InvalidArgumentException
      */
-    public function __get( $name )
+    public function __get($name)
     {
-        if ( ! is_string( $name ) ) {
-            throw new InvalidArgumentException( 'HTML_E_INVALID_ARGUMENT', 0, [ 'string' ] );
+        if ( ! is_string($name)) {
+            throw new InvalidArgumentException('HTML_E_INVALID_ARGUMENT', 0, ['string']);
         }
-        if ( $name === 'innerHTML' ) {
-            $html = $this->ownerDocument->saveHTML( $this );
+        if ($name === 'innerHTML') {
+            $html = $this->ownerDocument->saveHTML($this);
             $nodeName = $this->nodeName;
 
-            return preg_replace( '@^<' . $nodeName . '[^>]*>|</' . $nodeName . '>$@', '', $html );
-        } elseif ( $name === 'outerHTML' ) {
-            return $this->ownerDocument->saveHTML( $this );
+            return preg_replace('@^<' . $nodeName . '[^>]*>|</' . $nodeName . '>$@', '', $html);
+        } elseif ($name === 'outerHTML') {
+            return $this->ownerDocument->saveHTML($this);
         } else {
-            throw new InvalidArgumentException( 'HTML_E_INVALID_ARGUMENT', 0, [ 'HTMLDOMElement::$' . $name ] );
+            throw new InvalidArgumentException('HTML_E_INVALID_ARGUMENT', 0, ['HTMLDOMElement::$' . $name]);
         }
     }
 
@@ -60,37 +60,37 @@ class Element extends \DOMElement
      *
      * @throws \InvalidArgumentException
      */
-    public function __set( $name, $value )
+    public function __set($name, $value)
     {
-        if ( ! is_string( $name ) ) {
-            throw new InvalidArgumentException( 'HTML_E_INVALID_ARGUMENT', 0, [ 'string' ] );
+        if ( ! is_string($name)) {
+            throw new InvalidArgumentException('HTML_E_INVALID_ARGUMENT', 0, ['string']);
         }
 
-        if ( ! is_string( $value ) ) {
-            throw new InvalidArgumentException( 'HTML_E_INVALID_ARGUMENT', 0, [ 'string' ] );
+        if ( ! is_string($value)) {
+            throw new InvalidArgumentException('HTML_E_INVALID_ARGUMENT', 0, ['string']);
         }
 
-        if ( $name === 'innerHTML' ) {
-            while ( $this->hasChildNodes() ) {
-                $this->removeChild( $this->firstChild );
+        if ($name === 'innerHTML') {
+            while ($this->hasChildNodes()) {
+                $this->removeChild($this->firstChild);
             }
 
             $DOMDocument = new Document();
-            $DOMDocument->loadHTML( '<body>' . $value . '</body>' );
+            $DOMDocument->loadHTML('<body>' . $value . '</body>');
 
-            foreach ( $DOMDocument->getElementsByTagName( 'body' )->item( 0 )->childNodes as $node ) {
-                $node = $this->ownerDocument->importNode( $node, true );
-                $this->appendChild( $node );
+            foreach ($DOMDocument->getElementsByTagName('body')->item(0)->childNodes as $node) {
+                $node = $this->ownerDocument->importNode($node, true);
+                $this->appendChild($node);
             }
-        } elseif ( $name === 'outerHTML' ) {
+        } elseif ($name === 'outerHTML') {
             $DOMDocument = new Document();
-            $DOMDocument->loadHTML( '<body>' . $value . '</body>' );
-            foreach ( $DOMDocument->getElementsByTagName( 'body' )->item( 0 )->childNodes as $node ) {
-                $node = $this->ownerDocument->importNode( $node, true );
-                $this->parentNode->insertBefore( $node, $this );
+            $DOMDocument->loadHTML('<body>' . $value . '</body>');
+            foreach ($DOMDocument->getElementsByTagName('body')->item(0)->childNodes as $node) {
+                $node = $this->ownerDocument->importNode($node, true);
+                $this->parentNode->insertBefore($node, $this);
             }
 
-            $this->parentNode->removeChild( $this );
+            $this->parentNode->removeChild($this);
         }
     }
 
@@ -103,10 +103,10 @@ class Element extends \DOMElement
      *
      * @return static
      */
-    public function addAttributes( array $attr )
+    public function addAttributes(array $attr)
     {
-        foreach ( $attr as $name => $value ) {
-            $this->setAttribute( $name, $value );
+        foreach ($attr as $name => $value) {
+            $this->setAttribute($name, $value);
         }
 
         return $this;
@@ -124,8 +124,8 @@ class Element extends \DOMElement
         $attributesCount = $this->attributes->length;
         $attributes = [];
 
-        for ( $i = 0; $i < $attributesCount; $i++ ) {
-            $attributes[] = $this->attributes->item( $i );
+        for ($i = 0; $i < $attributesCount; $i++) {
+            $attributes[] = $this->attributes->item($i);
         }
 
         return $attributes;
@@ -164,9 +164,9 @@ class Element extends \DOMElement
      */
     public function clear()
     {
-        if ( $this->childNodes->length > 0 ) {
-            foreach ( $this->childNodes as $childNode ) {
-                $this->removeChild( $childNode );
+        if ($this->childNodes->length > 0) {
+            foreach ($this->childNodes as $childNode) {
+                $this->removeChild($childNode);
             }
         }
 
@@ -182,10 +182,10 @@ class Element extends \DOMElement
      *
      * @return string
      */
-    public function html( $newInnerHTML = null )
+    public function html($newInnerHTML = null)
     {
-        if ( isset( $newInnerHTML ) ) {
-            $this->replace( $newInnerHTML );
+        if (isset($newInnerHTML)) {
+            $this->replace($newInnerHTML);
         }
 
         return $this->innerHTML;
@@ -200,11 +200,11 @@ class Element extends \DOMElement
      *
      * @return \DOMNode
      */
-    public function replace( $source )
+    public function replace($source)
     {
-        $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
+        $importNode = $this->ownerDocument->importNode($this->ownerDocument->importSourceNode($source), true);
 
-        return $this->parentNode->replaceChild( $importNode, $this );
+        return $this->parentNode->replaceChild($importNode, $this);
     }
 
     // ------------------------------------------------------------------------
@@ -216,9 +216,9 @@ class Element extends \DOMElement
      *
      * @return null
      */
-    public function text( $newTextContent = null )
+    public function text($newTextContent = null)
     {
-        if ( isset( $newTextContent ) ) {
+        if (isset($newTextContent)) {
             $this->textContent = $this->nodeValue = $newTextContent;
         }
 
@@ -234,11 +234,11 @@ class Element extends \DOMElement
      *
      * @return \DOMNode
      */
-    public function append( $source )
+    public function append($source)
     {
-        $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
+        $importNode = $this->ownerDocument->importNode($this->ownerDocument->importSourceNode($source), true);
 
-        return $this->insertBefore( $importNode, $this->firstChild );
+        return $this->insertBefore($importNode, $this->firstChild);
     }
 
     // ------------------------------------------------------------------------
@@ -250,11 +250,11 @@ class Element extends \DOMElement
      *
      * @return \DOMNode
      */
-    public function prepend( $source )
+    public function prepend($source)
     {
-        $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
+        $importNode = $this->ownerDocument->importNode($this->ownerDocument->importSourceNode($source), true);
 
-        return $this->appendChild( $importNode );
+        return $this->appendChild($importNode);
     }
 
     // ------------------------------------------------------------------------
@@ -266,11 +266,11 @@ class Element extends \DOMElement
      *
      * @return \DOMNode
      */
-    public function before( $source )
+    public function before($source)
     {
-        $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
+        $importNode = $this->ownerDocument->importNode($this->ownerDocument->importSourceNode($source), true);
 
-        return $this->parentNode->insertBefore( $importNode, $this );
+        return $this->parentNode->insertBefore($importNode, $this);
     }
 
     // ------------------------------------------------------------------------
@@ -282,18 +282,18 @@ class Element extends \DOMElement
      *
      * @return bool
      */
-    public function after( $source )
+    public function after($source)
     {
-        $importNode = $this->ownerDocument->importNode( $this->ownerDocument->importSourceNode( $source ), true );
+        $importNode = $this->ownerDocument->importNode($this->ownerDocument->importSourceNode($source), true);
 
         $isFoundSameNode = false;
 
-        foreach ( $this->parentNode->childNodes as $key => $childNode ) {
-            if ( $childNode->isSameNode( $this ) ) {
+        foreach ($this->parentNode->childNodes as $key => $childNode) {
+            if ($childNode->isSameNode($this)) {
                 $isFoundSameNode = true;
                 continue;
-            } elseif ( $isFoundSameNode ) {
-                $this->parentNode->insertBefore( $importNode, $childNode );
+            } elseif ($isFoundSameNode) {
+                $this->parentNode->insertBefore($importNode, $childNode);
 
                 return true;
                 break;
@@ -310,6 +310,6 @@ class Element extends \DOMElement
      */
     public function remove()
     {
-        return $this->parentNode->removeChild( $this );
+        return $this->parentNode->removeChild($this);
     }
 }

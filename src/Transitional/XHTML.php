@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Transitional;
@@ -45,6 +46,6 @@ class XHTML extends Document
 </html>
 HTML;
 
-        parent::loadHTML( $htmlTemplate );
+        parent::loadHTML($htmlTemplate);
     }
 }

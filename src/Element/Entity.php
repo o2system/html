@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Element;
@@ -23,13 +24,13 @@ class Entity
 {
     protected $entityName;
 
-    public function setEntityName( $entityName )
-    {
-        $this->entityName = camelcase( $entityName );
-    }
-
     public function getEntityName()
     {
         return $this->entityName;
+    }
+
+    public function setEntityName($entityName)
+    {
+        $this->entityName = camelcase($entityName);
     }
 }

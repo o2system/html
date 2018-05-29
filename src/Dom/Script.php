@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Dom;
@@ -26,10 +27,10 @@ class Script extends \ArrayIterator
      *
      * @param \O2System\Html\Dom\Script $script
      */
-    public function import( Script $script )
+    public function import(Script $script)
     {
-        foreach ( $script->getArrayCopy() as $scriptTextContent ) {
-            $this->append( $scriptTextContent );
+        foreach ($script->getArrayCopy() as $scriptTextContent) {
+            $this->append($scriptTextContent);
         }
     }
 
@@ -41,12 +42,12 @@ class Script extends \ArrayIterator
      * @param string $offset
      * @param string $value
      */
-    public function offsetSet( $offset, $value )
+    public function offsetSet($offset, $value)
     {
-        $value = trim( $value );
+        $value = trim($value);
 
-        if ( ! empty( $value ) ) {
-            parent::offsetSet( $offset, $value );
+        if ( ! empty($value)) {
+            parent::offsetSet($offset, $value);
         }
     }
 
@@ -59,6 +60,6 @@ class Script extends \ArrayIterator
      */
     public function __toString()
     {
-        return PHP_EOL . implode( PHP_EOL, $this->getArrayCopy() ) . PHP_EOL;
+        return PHP_EOL . implode(PHP_EOL, $this->getArrayCopy()) . PHP_EOL;
     }
 }

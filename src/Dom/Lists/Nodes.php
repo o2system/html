@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Dom\Lists;
@@ -28,23 +29,23 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
-    public function __construct( \DOMNodeList $nodeList )
+    public function __construct(\DOMNodeList $nodeList)
     {
         $nodes = [];
 
-        foreach ( $nodeList as $node ) {
+        foreach ($nodeList as $node) {
             $this->length++;
             $nodes[] = $node;
         }
 
-        parent::__construct( $nodes );
+        parent::__construct($nodes);
     }
 
     // ------------------------------------------------------------------------
 
-    public function item( $offset )
+    public function item($offset)
     {
-        return $this->offsetGet( $offset );
+        return $this->offsetGet($offset);
     }
 
     // ------------------------------------------------------------------------
@@ -72,16 +73,16 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
      */
     public function getChildren()
     {
-        return new self( $this->current()->childNodes );
+        return new self($this->current()->childNodes);
     }
 
     // ------------------------------------------------------------------------
 
-    public function replace( $source )
+    public function replace($source)
     {
-        foreach ( $this as $node ) {
-            if ( $node instanceof Element ) {
-                $node->replace( $source );
+        foreach ($this as $node) {
+            if ($node instanceof Element) {
+                $node->replace($source);
             }
         }
     }
@@ -90,10 +91,10 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     public function remove()
     {
-        foreach ( $this as $node ) {
-            if ( $node instanceof Element ) {
-                if ( ! empty( $node->parentNode ) ) {
-                    $node->parentNode->removeChild( $node );
+        foreach ($this as $node) {
+            if ($node instanceof Element) {
+                if ( ! empty($node->parentNode)) {
+                    $node->parentNode->removeChild($node);
                 }
             }
         }
@@ -101,11 +102,11 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
-    public function prepend( $source )
+    public function prepend($source)
     {
-        foreach ( $this as $node ) {
-            if ( $node instanceof Element ) {
-                $node->append( $source );
+        foreach ($this as $node) {
+            if ($node instanceof Element) {
+                $node->append($source);
             }
         }
 
@@ -114,11 +115,11 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
-    public function append( $source )
+    public function append($source)
     {
-        foreach ( $this as $node ) {
-            if ( $node instanceof Element ) {
-                $node->prepend( $source );
+        foreach ($this as $node) {
+            if ($node instanceof Element) {
+                $node->prepend($source);
             }
         }
 
@@ -127,11 +128,11 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
-    public function before( $source )
+    public function before($source)
     {
-        foreach ( $this as $node ) {
-            if ( $node instanceof Element ) {
-                $node->before( $source );
+        foreach ($this as $node) {
+            if ($node instanceof Element) {
+                $node->before($source);
             }
         }
 
@@ -140,11 +141,11 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
-    public function after( $source )
+    public function after($source)
     {
-        foreach ( $this as $node ) {
-            if ( $node instanceof Element ) {
-                $node->after( $source );
+        foreach ($this as $node) {
+            if ($node instanceof Element) {
+                $node->after($source);
             }
         }
 
@@ -155,8 +156,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     public function __empty()
     {
-        foreach ( $this as $node ) {
-            if ( $node instanceof Element ) {
+        foreach ($this as $node) {
+            if ($node instanceof Element) {
                 $node->empty();
             }
         }

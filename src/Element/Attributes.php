@@ -25,19 +25,12 @@ use O2System\Psr\Patterns\Structural\Repository\AbstractRepository;
  */
 class Attributes extends AbstractRepository implements RenderableInterface
 {
-    public function hasAttributeId()
-    {
-        return (bool)empty($this->storage[ 'id' ]) ? false : true;
-    }
-
     public function setAttributeId($id)
     {
         $this->addAttribute('id', $id);
 
         return $this;
     }
-
-    // ------------------------------------------------------------------------
 
     public function addAttribute($name, $value)
     {
@@ -60,6 +53,51 @@ class Attributes extends AbstractRepository implements RenderableInterface
         } else {
             $this->storage[ $name ] = $value;
         }
+
+        return $this;
+    }
+
+    // ------------------------------------------------------------------------
+
+    public function addAttributeClass($classes)
+    {
+        if (is_string($classes)) {
+            $classes = explode(',', $classes);
+        }
+
+        $classes = array_map('trim', $classes);
+        $classes = array_filter($classes);
+
+        if ( ! $this->offsetExists('class')) {
+            $this->storage[ 'class' ] = [];
+        }
+
+        $this->storage[ 'class' ] = array_merge($this->storage[ 'class' ], $classes);
+        $this->storage[ 'class' ] = array_unique($this->storage[ 'class' ]);
+
+        return $this;
+    }
+
+    // ------------------------------------------------------------------------
+
+    public function addAttributeStyle($styles, $value = null)
+    {
+        if (is_string($styles)) {
+            $styles = [$styles => $value];
+        }
+
+        if ( ! $this->offsetExists('style')) {
+            $this->storage[ 'style' ] = [];
+        }
+
+        foreach ($styles as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
+            $styles[ trim($key) ] = trim($value);
+        }
+
+        $this->storage[ 'style' ] = array_merge($this->storage[ 'style' ], $styles);
 
         return $this;
     }
@@ -90,8 +128,6 @@ class Attributes extends AbstractRepository implements RenderableInterface
         return false;
     }
 
-    // ------------------------------------------------------------------------
-
     public function removeAttribute($attributes)
     {
         if (is_string($attributes)) {
@@ -115,6 +151,8 @@ class Attributes extends AbstractRepository implements RenderableInterface
         }
     }
 
+    // ------------------------------------------------------------------------
+
     public function getAttributeId()
     {
         if ($this->hasAttributeId()) {
@@ -126,6 +164,11 @@ class Attributes extends AbstractRepository implements RenderableInterface
 
     // ------------------------------------------------------------------------
 
+    public function hasAttributeId()
+    {
+        return (bool)empty($this->storage[ 'id' ]) ? false : true;
+    }
+
     public function hasAttributeClass($className)
     {
         if ( ! $this->offsetExists('class')) {
@@ -135,8 +178,6 @@ class Attributes extends AbstractRepository implements RenderableInterface
         return in_array($className, $this->storage[ 'class' ]);
     }
 
-    // ------------------------------------------------------------------------
-
     public function getAttributeClass()
     {
         if ( ! $this->offsetExists('class')) {
@@ -144,47 +185,6 @@ class Attributes extends AbstractRepository implements RenderableInterface
         }
 
         return implode(', ', $this->storage[ 'class' ]);
-    }
-
-    public function addAttributeClass($classes)
-    {
-        if (is_string($classes)) {
-            $classes = explode(',', $classes);
-        }
-
-        $classes = array_map('trim', $classes);
-        $classes = array_filter($classes);
-
-        if ( ! $this->offsetExists('class')) {
-            $this->storage[ 'class' ] = [];
-        }
-
-        $this->storage[ 'class' ] = array_merge($this->storage[ 'class' ], $classes);
-        $this->storage[ 'class' ] = array_unique($this->storage[ 'class' ]);
-
-        return $this;
-    }
-
-    public function addAttributeStyle($styles, $value = null)
-    {
-        if (is_string($styles)) {
-            $styles = [$styles => $value];
-        }
-
-        if ( ! $this->offsetExists('style')) {
-            $this->storage[ 'style' ] = [];
-        }
-
-        foreach ($styles as $key => $value) {
-            if (empty($value)) {
-                continue;
-            }
-            $styles[ trim($key) ] = trim($value);
-        }
-
-        $this->storage[ 'style' ] = array_merge($this->storage[ 'style' ], $styles);
-
-        return $this;
     }
 
     public function removeAttributeClass($classes)
@@ -251,6 +251,11 @@ class Attributes extends AbstractRepository implements RenderableInterface
         return false;
     }
 
+    public function __toString()
+    {
+        return $this->render();
+    }
+
     public function render(array $options = [])
     {
         $output = '';
@@ -312,10 +317,5 @@ class Attributes extends AbstractRepository implements RenderableInterface
         }
 
         return $output;
-    }
-
-    public function __toString()
-    {
-        return $this->render();
     }
 }

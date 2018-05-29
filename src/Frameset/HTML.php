@@ -8,6 +8,7 @@
  * @author         Steeve Andrian Salim
  * @copyright      Copyright (c) Steeve Andrian Salim
  */
+
 // ------------------------------------------------------------------------
 
 namespace O2System\Html\Frameset;
@@ -44,6 +45,6 @@ class HTML extends Document
 </html>
 HTML;
 
-        parent::loadHTML( $htmlTemplate );
+        parent::loadHTML($htmlTemplate);
     }
 }
