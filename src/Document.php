@@ -224,14 +224,16 @@ HTML;
         $titleElement = $this->getElementsByTagName('title')->item(0);
 
         // Insert Meta
-        if (is_array($metaNodes = $this->metaNodes->getArrayCopy())) {
-            foreach (array_reverse($metaNodes) as $metaNode) {
+        if ($this->metaNodes->count()) {
+            $metaNodes = array_reverse($this->metaNodes->getArrayCopy());
+
+            foreach ($metaNodes as $metaNode) {
                 $headElement->insertBefore($this->importNode($metaNode), $titleElement);
             }
         }
 
         // Insert Link
-        if (count($this->linkNodes)) {
+        if ($this->linkNodes->count()) {
             foreach ($this->linkNodes as $linkNode) {
                 $headElement->appendChild($this->importNode($linkNode));
             }
@@ -276,7 +278,7 @@ HTML;
             $output = $beautifier->format($output);
         }
 
-        return (string)$output;
+        return (string) $output;
     }
 
     // ------------------------------------------------------------------------
@@ -437,169 +439,94 @@ HTML;
      */
     private function parseHTML($source)
     {
-        foreach (['head', 'body'] as $tag) {
-            if (preg_match("/<$tag.*?>([\w\W]*?)(<\/$tag>)/", $source, $matches)) {
+        $DOMDocument = new \DOMDocument();
+        $DOMDocument->loadHTML($source);
 
-                $replaceSource = $parseSource = $matches[ 1 ];
-                $parseSource = $this->parseSource($parseSource, $tag);
+        $DOMXPath = new \DOMXPath($DOMDocument);
+        $metas = $DOMXPath->query('//meta');
+        foreach ($metas as $meta) {
+            $attributes = [];
+            foreach ($meta->attributes as $name => $attribute) {
+                $attributes[ $name ] = $attribute->nodeValue;
+            }
 
-                $source = @str_replace($replaceSource, $parseSource, $source);
+            $this->metaNodes->createElement($attributes);
+        }
+
+        $source = preg_replace('#<meta(.*?)>#is', '', $source); // clean up all inline meta tags
+
+        $links = $DOMXPath->query('//link'); // find all inline link tags
+        foreach ($links as $link) {
+            $attributes = [];
+            foreach ($link->attributes as $name => $attribute) {
+                $attributes[ $name ] = $attribute->nodeValue;
+            }
+
+            $this->linkNodes->createElement($attributes);
+        }
+
+        $source = preg_replace('#<link(.*?)>#is', '', $source); // clean up all inline meta tags
+
+        $scripts = $DOMXPath->query('//head/script'); // find all inline script tags
+        foreach ($scripts as $script) {
+            $attributes = [];
+            foreach ($script->attributes as $name => $attribute) {
+                $attributes[ $name ] = $attribute->nodeValue;
+            }
+
+            if($script->textContent == '') {
+                $this->headScriptNodes->createElement($attributes);
+            } else {
+                $this->headScriptContent->append($script->textContent);
             }
         }
 
-        // Parse Code
-        if (preg_match_all("#<\s*?code\b[^>]*>(.*?)</code\b[^>]*>#s", $source, $matches)) {
-            if ( ! empty($matches[ 1 ])) {
-                foreach ($matches[ 1 ] as $match) {
-                    $replaceSource = $parseSource = $match;
+        $scripts = $DOMXPath->query('//body/script'); // find all inline script tags
+        foreach ($scripts as $script) {
+            $attributes = [];
+            foreach ($script->attributes as $name => $attribute) {
+                $attributes[ $name ] = $attribute->nodeValue;
+            }
 
-                    $parseSource = str_replace(['{{php', '/php}}'], ['<?php', '?>'], $parseSource);
-                    $parseSource = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", $parseSource);
-
-                    $source = str_replace($replaceSource, htmlentities($parseSource), $source);
-                }
+            if($script->textContent == '') {
+                $this->bodyScriptNodes->createElement($attributes);
+            } else {
+                $this->bodyScriptContent->append($script->textContent);
             }
         }
 
-        return $this->parseSource($source);
-    }
-
-    // ------------------------------------------------------------------------
-
-    private function parseSource($source, $tag = null)
-    {
-        // Has inline meta tags
-        $pattern
-            = '
-              ~<\s*meta\s
-            
-              # using lookahead to capture type to $1
-                (?=[^>]*?
-                \b(?:name|property|http-equiv)\s*=\s*
-                (?|"\s*([^"]*?)\s*"|\'\s*([^\']*?)\s*\'|
-                ([^"\'>]*?)(?=\s*/?\s*>|\s\w+\s*=))
-              )
-            
-              # capture content to $2
-              [^>]*?\bcontent\s*=\s*
-                (?|"\s*([^"]*?)\s*"|\'\s*([^\']*?)\s*\'|
-                ([^"\'>]*?)(?=\s*/?\s*>|\s\w+\s*=))
-              [^>]*>
-            
-              ~ix';
-
-        if (preg_match_all($pattern, $source, $matches)) {
-            $metaTags = array_combine(array_map('strtolower', $matches[ 1 ]), $matches[ 2 ]);
-
-            foreach ($metaTags as $name => $content) {
-                $meta = $this->createElement('meta');
-                $meta->setAttribute($name, $content);
-                $this->metaNodes[ $name ] = $meta;
+        $scripts = $DOMXPath->query('//script'); // find all inline script tags
+        foreach ($scripts as $script) {
+            $attributes = [];
+            foreach ($script->attributes as $name => $attribute) {
+                $attributes[ $name ] = $attribute->nodeValue;
             }
 
-            $source = preg_replace('#<meta(.*?)>#is', '', $source);
-        }
-
-        if (preg_match_all('#<script(.*?)>(.*?)</script>#is', $source, $matches)) {
-            if (isset($matches[ 2 ])) {
-                foreach ($matches[ 2 ] as $match) {
-                    if ( ! empty($match)) {
-                        $this->bodyScriptContent[] = trim($match) . PHP_EOL;
-                    }
-                }
+            if($script->textContent) {
+                $this->bodyScriptContent->append($script->textContent);
             }
         }
 
-        if (preg_match_all('/((<[\\s\\/]*script\\b[^>]*>)([^>]*)(<\\/script>))/', $source, $matches)) {
-            if (isset($matches[ 2 ])) {
-                foreach ($matches[ 2 ] as $key => $match) {
-                    if (strpos($match, 'type="application/ld+json"') !== false) {
-                        $scriptElement = $this->createElement('script');
-                        $scriptElement->setAttribute('type', 'application/ld+json');
-                        $scriptElement->textContent = $matches[ 3 ][ $key ];
-                        $this->headScriptNodes[] = $scriptElement;
-                        unset($matches[ 3 ][ $key ]);
-                    } elseif (strpos($match, 'src=') !== false) {
-                        if (preg_match_all('/\s(.*?)="(.*?)"/', $match, $attributes)) {
-                            $scriptElement = $this->createElement('script');
-
-                            $attributes[ 1 ] = array_map('trim', $attributes[ 1 ]);
-                            $attributes[ 2 ] = array_map('trim', $attributes[ 2 ]);
-
-                            foreach ($attributes[ 1 ] as $key => $name) {
-                                $value = isset($attributes[ 2 ][ $key ]) ? $attributes[ 2 ][ $key ] : $name;
-
-                                if (strpos($name, 'async defer') !== false) {
-                                    $scriptElement->setAttribute('async', "async");
-                                    $scriptElement->setAttribute('defer', "defer");
-                                    $scriptElement->setAttribute('scr', $value);
-                                } elseif (strpos($name, 'async') !== false) {
-                                    $scriptElement->setAttribute('async', "async");
-                                    $scriptElement->setAttribute('scr', $value);
-                                } elseif (strpos($name, 'defer') !== false) {
-                                    $scriptElement->setAttribute('defer', "defer");
-                                    $scriptElement->setAttribute('scr', $value);
-                                } else {
-                                    $scriptElement->setAttribute($name, $value);
-                                }
-                            }
-
-                            if ($tag === 'head') {
-                                $this->headScriptNodes[] = $scriptElement;
-                            } else {
-                                $this->bodyScriptNodes[] = $scriptElement;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (isset($matches[ 3 ])) {
-                foreach ($matches[ 3 ] as $match) {
-                    if ($tag === 'head') {
-                        $this->headScriptContent[] = trim($match) . PHP_EOL;
-                    } else {
-                        $this->headScriptContent[] = trim($match) . PHP_EOL;
-                    }
-                }
-            }
-
-            $source = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $source);
-        }
-
-        // Has inline link Element
-        if (preg_match_all('#<link(.*?)>#is', $source, $matches)) {
-            if (isset($matches[ 0 ])) {
-                foreach ($matches[ 0 ] as $match) {
-                    if (strpos($match, 'href=') !== false) {
-                        if (preg_match_all('/\s(.*?)="(.*?)"/', $match, $attributes)) {
-                            $linkElement = $this->createElement('link');
-
-                            $attributes[ 1 ] = array_map('trim', $attributes[ 1 ]);
-                            $attributes[ 2 ] = array_map('trim', $attributes[ 2 ]);
-
-                            foreach ($attributes[ 1 ] as $key => $name) {
-                                $value = isset($attributes[ 2 ][ $key ]) ? $attributes[ 2 ][ $key ] : $name;
-                                $linkElement->setAttribute($name, $value);
-                            }
-                            $this->linkNodes[] = $linkElement;
-                        }
-                    }
-                }
-            }
-
-            $source = preg_replace('#<link(.*?)>#is', '', $source);
-        }
+        $source = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $source);
 
         // Has inline style Element
-        if (preg_match_all('/((<[\\s\\/]*style\\b[^>]*>)([^>]*)(<\\/style>))/i', $source, $matches)) {
-            if (isset($matches[ 3 ])) {
-                foreach ($matches[ 3 ] as $match) {
-                    $this->styleContent[] = trim($match) . PHP_EOL;
-                }
+        $styles = $DOMXPath->query('//style');
+        foreach ($styles as $style) {
+            if($style->textContent == '') {
+                $this->styleContent->append($style->textContent);
             }
+        }
 
-            $source = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $source);
+        $source = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $source);
+
+        $codes = $DOMXPath->query('//code');
+        foreach ($codes as $code) {
+            if($code->textContent == '') {
+                $code = str_replace(['{{php', '/php}}'], ['<?php', '?>'], $code->textContent);
+                $code = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", $code);
+
+                $source = str_replace($code, htmlentities($code), $source);
+            }
         }
 
         return $source;

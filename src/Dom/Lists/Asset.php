@@ -84,20 +84,23 @@ class Asset extends \ArrayIterator
     // ------------------------------------------------------------------------
 
     /**
-     * Asset::createElement
+     * Meta::createElement
      *
-     * @param string $name
-     * @param string $value
+     * @param array $attributes
      *
      * @return \DOMElement
      */
-    public function createElement($name, $value)
+    public function createElement(array $attributes)
     {
-        $meta = $this->ownerDocument->createElement($this->element);
-        $meta->setAttribute($name, $value);
+        $element = $this->ownerDocument->createElement($this->element);
 
-        parent::offsetSet($name, $meta);
+        $name = null;
+        foreach ($attributes as $key => $value) {
+            $element->setAttribute($key, $value);
+        }
 
-        return $meta;
+        $this[] = $element;
+
+        return $element;
     }
 }
