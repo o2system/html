@@ -22,6 +22,8 @@ namespace O2System\Html\Dom;
  */
 class Script extends \ArrayIterator
 {
+    protected $hashes = [];
+
     /**
      * Script::import
      *
@@ -52,6 +54,45 @@ class Script extends \ArrayIterator
     }
 
     // ------------------------------------------------------------------------
+
+    /**
+     * Script::exists
+     *
+     * @param string $value
+     *
+     * @return bool
+     */
+    public function exists($value)
+    {
+        $value = trim($value);
+
+        if ( ! empty($value)) {
+
+            $hash = md5($value);
+            return (bool) in_array($hash, $this->hashes);
+        }
+
+        return false;
+    }
+
+    /**
+     * Script::append
+     *
+     * @param string $value
+     */
+    public function append($value)
+    {
+        $value = trim($value);
+
+        if ( ! empty($value)) {
+
+            $hash = md5($value);
+            if(!in_array($hash, $this->hashes)) {
+                parent::append($value);
+                $this->hashes[] = $hash;
+            }
+        }
+    }
 
     /**
      * Script::__toString

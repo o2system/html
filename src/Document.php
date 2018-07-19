@@ -491,7 +491,9 @@ HTML;
             if($script->textContent == '') {
                 $this->bodyScriptNodes->createElement($attributes);
             } else {
-                $this->bodyScriptContent->append($script->textContent);
+                if(! $this->headScriptContent->exists($script->textContent)) {
+                    $this->bodyScriptContent->append($script->textContent);
+                }
             }
         }
 
@@ -503,21 +505,25 @@ HTML;
             }
 
             if($script->textContent) {
-                $this->bodyScriptContent->append($script->textContent);
+                if(! $this->headScriptContent->exists($script->textContent)) {
+                    $this->bodyScriptContent->append($script->textContent);
+                }
             }
         }
 
         $source = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $source);
 
         // Has inline style Element
-        $styles = $DOMXPath->query('//style');
-        foreach ($styles as $style) {
-            if($style->textContent == '') {
-                $this->styleContent->append($style->textContent);
+        if (preg_match_all('/((<[\\s\\/]*style\\b[^>]*>)([^>]*)(<\\/style>))/i', $source, $matches)) {
+            if (isset($matches[ 3 ])) {
+                foreach ($matches[ 3 ] as $match) {
+                    $style = trim($match);
+                    $this->styleContent[md5($style)] = $style . PHP_EOL;
+                }
             }
-        }
 
-        $source = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $source);
+            $source = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $source);
+        }
 
         $codes = $DOMXPath->query('//code');
         foreach ($codes as $code) {
