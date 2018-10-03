@@ -75,6 +75,10 @@ class Attributes extends AbstractRepository implements RenderableInterface
         $this->storage[ 'class' ] = array_merge($this->storage[ 'class' ], $classes);
         $this->storage[ 'class' ] = array_unique($this->storage[ 'class' ]);
 
+        if(in_array('disabled', $this->storage['class'])) {
+            $this->removeAttributeClass('active');
+        }
+
         return $this;
     }
 
