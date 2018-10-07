@@ -479,6 +479,8 @@ HTML;
             } else {
                 $this->headScriptContent->append($script->textContent);
             }
+
+            $script->parentNode->removeChild($script);
         }
 
         $scripts = $DOMXPath->query('//body/script'); // find all inline script tags
@@ -495,23 +497,9 @@ HTML;
                     $this->bodyScriptContent->append($script->textContent);
                 }
             }
+
+            $script->parentNode->removeChild($script);
         }
-
-        $scripts = $DOMXPath->query('//script'); // find all inline script tags
-        foreach ($scripts as $script) {
-            $attributes = [];
-            foreach ($script->attributes as $name => $attribute) {
-                $attributes[ $name ] = $attribute->nodeValue;
-            }
-
-            if($script->textContent) {
-                if(! $this->headScriptContent->exists($script->textContent)) {
-                    $this->bodyScriptContent->append($script->textContent);
-                }
-            }
-        }
-
-        $source = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $source);
 
         // Has inline style Element
         if (preg_match_all('/((<[\\s\\/]*style\\b[^>]*>)([^>]*)(<\\/style>))/i', $source, $matches)) {
