@@ -501,6 +501,8 @@ HTML;
             $script->parentNode->removeChild($script);
         }
 
+        $source = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $source);
+
         // Has inline style Element
         if (preg_match_all('/((<[\\s\\/]*style\\b[^>]*>)([^>]*)(<\\/style>))/i', $source, $matches)) {
             if (isset($matches[ 3 ])) {
@@ -518,10 +520,11 @@ HTML;
             if($code->textContent == '') {
                 $code = str_replace(['{{php', '/php}}'], ['<?php', '?>'], $code->textContent);
                 $code = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", $code);
-
                 $source = str_replace($code, htmlentities($code), $source);
             }
         }
+
+        $source = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", $source);
 
         return $source;
     }
