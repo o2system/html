@@ -440,6 +440,20 @@ HTML;
     private function parseHTML($source)
     {
         $DOMDocument = new \DOMDocument();
+
+        // Has inline script element
+        if (preg_match_all('/<script((?:(?!src=).)*?)>(.*?)<\/script>/smix', $source, $matches)) {
+            if (isset($matches[ 2 ])) {
+                foreach ($matches[ 2 ] as $match) {
+                    $script = trim($match);
+                    $this->bodyScriptContent[md5($script)] = $script . PHP_EOL;
+                }
+            }
+        }
+
+        // Remove all inline script first
+        $source = preg_replace('/<script((?:(?!src=).)*?)>(.*?)<\/script>/smix', '', $source);
+
         $DOMDocument->loadHTML($source);
 
         $DOMXPath = new \DOMXPath($DOMDocument);
@@ -473,14 +487,6 @@ HTML;
             foreach ($script->attributes as $name => $attribute) {
                 $attributes[ $name ] = $attribute->nodeValue;
             }
-
-            if($script->textContent == '') {
-                $this->headScriptNodes->createElement($attributes);
-            } else {
-                $this->headScriptContent->append($script->textContent);
-            }
-
-            $script->parentNode->removeChild($script);
         }
 
         $scripts = $DOMXPath->query('//body/script'); // find all inline script tags
@@ -492,13 +498,7 @@ HTML;
 
             if($script->textContent == '') {
                 $this->bodyScriptNodes->createElement($attributes);
-            } else {
-                if(! $this->headScriptContent->exists($script->textContent)) {
-                    $this->bodyScriptContent->append($script->textContent);
-                }
             }
-
-            $script->parentNode->removeChild($script);
         }
 
         $source = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $source);
