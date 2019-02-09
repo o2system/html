@@ -1,17 +1,10 @@
-<div align="center" markdown="1">
-
 [![O2System Framework](http://o2system.id/assets/img/logo/logo-white-200px.png?logo)](http://o2system.id)
-</div>
-
-<div align="center" markdown="1">
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/o2system/html/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/o2system/html/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/o2system/html/badges/build.png?b=master)](https://scrutinizer-ci.com/g/o2system/html/build-status/master)
 [![Latest Stable Version](https://poser.pugx.org/o2system/html/v/stable)](https://packagist.org/packages/o2system/html)
 [![Total Downloads](https://poser.pugx.org/o2system/html/downloads)](https://packagist.org/packages/o2system/html)
 [![License](https://poser.pugx.org/o2system/html/license)](https://packagist.org/packages/o2system/html)
-
-</div>
 
 # O2System Html
 O2System HTML is an Open Source PHP HTML Document and Elements Validator, Processor and Generator Library.
@@ -43,7 +36,7 @@ composer require o2system/html
 Documentation is available on this repository [wiki](https://github.com/o2system/html/wiki) or visit this repository [github page](https://o2system.github.io/html).
 
 ### Ideas and Suggestions
-Please kindly mail us at [o2system.framework@gmail.com](mailto:o2system.framework@gmail.com])
+Please kindly mail us at [contact@o2system.id](mailto:contact@o2system.id])
 
 ### Bugs and Issues
 Please kindly submit your [issues at Github](http://github.com/o2system/html/issues) so we can track all the issues along development and send a [pull request](http://github.com/o2system/html/pulls) to this repository.
@@ -52,10 +45,3 @@ Please kindly submit your [issues at Github](http://github.com/o2system/html/iss
 - PHP 7.2+
 - [Composer](https://getcomposer.org)
 - [O2System Kernel](https://github.com/o2system/kernel)
-
-### Credits
-|Role|Name|
-|----|----|
-|Founder and Lead Projects|[Steeven Andrian Salim](http://steevenz.com)|
-|Documentation|[Steeven Andrian Salim](http://steevenz.com)
-|Github Pages Designer| [Teguh Rianto](http://teguhrianto.tk)

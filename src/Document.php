@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the O2System PHP Framework package.
+ * This file is part of the O2System Framework package.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -278,7 +278,7 @@ HTML;
             $output = $beautifier->format($output);
         }
 
-        return (string) $output;
+        return (string)$output;
     }
 
     // ------------------------------------------------------------------------
@@ -446,7 +446,7 @@ HTML;
             if (isset($matches[ 2 ])) {
                 foreach ($matches[ 2 ] as $match) {
                     $script = trim($match);
-                    $this->bodyScriptContent[md5($script)] = $script . PHP_EOL;
+                    $this->bodyScriptContent[ md5($script) ] = $script . PHP_EOL;
                 }
             }
         }
@@ -496,7 +496,7 @@ HTML;
                 $attributes[ $name ] = $attribute->nodeValue;
             }
 
-            if($script->textContent == '') {
+            if ($script->textContent == '') {
                 $this->bodyScriptNodes->createElement($attributes);
             }
         }
@@ -508,7 +508,7 @@ HTML;
             if (isset($matches[ 3 ])) {
                 foreach ($matches[ 3 ] as $match) {
                     $style = trim($match);
-                    $this->styleContent[md5($style)] = $style . PHP_EOL;
+                    $this->styleContent[ md5($style) ] = $style . PHP_EOL;
                 }
             }
 
@@ -517,7 +517,7 @@ HTML;
 
         $codes = $DOMXPath->query('//code');
         foreach ($codes as $code) {
-            if($code->textContent == '') {
+            if ($code->textContent == '') {
                 $code = str_replace(['{{php', '/php}}'], ['<?php', '?>'], $code->textContent);
                 $code = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", $code);
                 $source = str_replace($code, htmlentities($code), $source);

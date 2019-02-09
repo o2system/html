@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the O2System PHP Framework package.
+ * This file is part of the O2System Framework package.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,7 +22,14 @@ namespace O2System\Html\Dom;
  */
 class Script extends \ArrayIterator
 {
+    /**
+     * Script::$hashes
+     *
+     * @var array
+     */
     protected $hashes = [];
+
+    // ------------------------------------------------------------------------
 
     /**
      * Script::import
@@ -33,6 +40,27 @@ class Script extends \ArrayIterator
     {
         foreach ($script->getArrayCopy() as $scriptTextContent) {
             $this->append($scriptTextContent);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Script::append
+     *
+     * @param string $value
+     */
+    public function append($value)
+    {
+        $value = trim($value);
+
+        if ( ! empty($value)) {
+
+            $hash = md5($value);
+            if ( ! in_array($hash, $this->hashes)) {
+                parent::append($value);
+                $this->hashes[] = $hash;
+            }
         }
     }
 
@@ -69,30 +97,14 @@ class Script extends \ArrayIterator
         if ( ! empty($value)) {
 
             $hash = md5($value);
-            return (bool) in_array($hash, $this->hashes);
+
+            return (bool)in_array($hash, $this->hashes);
         }
 
         return false;
     }
 
-    /**
-     * Script::append
-     *
-     * @param string $value
-     */
-    public function append($value)
-    {
-        $value = trim($value);
-
-        if ( ! empty($value)) {
-
-            $hash = md5($value);
-            if(!in_array($hash, $this->hashes)) {
-                parent::append($value);
-                $this->hashes[] = $hash;
-            }
-        }
-    }
+    // ------------------------------------------------------------------------
 
     /**
      * Script::__toString

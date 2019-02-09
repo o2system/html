@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the O2System PHP Framework package.
+ * This file is part of the O2System Framework package.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,10 +25,20 @@ use RecursiveIterator;
  */
 class Nodes extends \ArrayIterator implements \RecursiveIterator
 {
+    /**
+     * Nodes::$length
+     *
+     * @var int
+     */
     public $length = 0;
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::__construct
+     *
+     * @param \DOMNodeList $nodeList
+     */
     public function __construct(\DOMNodeList $nodeList)
     {
         $nodes = [];
@@ -43,6 +53,13 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::item
+     *
+     * @param string $offset
+     *
+     * @return mixed
+     */
     public function item($offset)
     {
         return $this->offsetGet($offset);
@@ -51,6 +68,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
     // ------------------------------------------------------------------------
 
     /**
+     * Nodes::hasChildren
+     *
      * Returns if an iterator can be created for the current entry.
      *
      * @link  http://php.net/manual/en/recursiveiterator.haschildren.php
@@ -65,6 +84,8 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
     // ------------------------------------------------------------------------
 
     /**
+     * Nodes::getChildren
+     *
      * Returns an iterator for the current entry.
      *
      * @link  http://php.net/manual/en/recursiveiterator.getchildren.php
@@ -78,6 +99,11 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::replace
+     *
+     * @param mixed $source
+     */
     public function replace($source)
     {
         foreach ($this as $node) {
@@ -89,6 +115,9 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::remove
+     */
     public function remove()
     {
         foreach ($this as $node) {
@@ -102,6 +131,13 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::prepend
+     *
+     * @param mixed $source
+     *
+     * @return static
+     */
     public function prepend($source)
     {
         foreach ($this as $node) {
@@ -115,6 +151,13 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::append
+     *
+     * @param mixed $source
+     *
+     * @return static
+     */
     public function append($source)
     {
         foreach ($this as $node) {
@@ -128,6 +171,13 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::before
+     *
+     * @param mixed $source
+     *
+     * @return static
+     */
     public function before($source)
     {
         foreach ($this as $node) {
@@ -141,6 +191,13 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::after
+     *
+     * @param mixed $source
+     *
+     * @return static
+     */
     public function after($source)
     {
         foreach ($this as $node) {
@@ -154,6 +211,11 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::__empty
+     *
+     * @return static
+     */
     public function __empty()
     {
         foreach ($this as $node) {
@@ -167,6 +229,11 @@ class Nodes extends \ArrayIterator implements \RecursiveIterator
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Nodes::__clone
+     *
+     * @return \O2System\Html\Dom\Lists\Nodes
+     */
     public function __clone()
     {
         return clone $this;

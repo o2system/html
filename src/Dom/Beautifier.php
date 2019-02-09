@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the O2System PHP Framework package.
+ * This file is part of the O2System Framework package.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,6 +23,8 @@ namespace O2System\Html\Dom;
 class Beautifier
 {
     /**
+     * Beautifier::ELEMENT_TYPE_BLOCK
+     *
      * HTML Element Type Block Constant
      *
      * @var int
@@ -30,6 +32,8 @@ class Beautifier
     const ELEMENT_TYPE_BLOCK = 0;
 
     /**
+     * Beautifier::ELEMENT_TYPE_INLINE
+     *
      * HTML Element Type Inline Constant
      *
      * @var int
@@ -37,6 +41,8 @@ class Beautifier
     const ELEMENT_TYPE_INLINE = 1;
 
     /**
+     * Beautifier::MATCH_INDENT_NO
+     *
      * HTML Element No Indent
      *
      * @var int
@@ -44,6 +50,8 @@ class Beautifier
     const MATCH_INDENT_NO = 0;
 
     /**
+     * Beautifier::MATCH_INDENT_DECREASE
+     *
      * HTML Element Indent Decrease
      *
      * @var int
@@ -51,6 +59,8 @@ class Beautifier
     const MATCH_INDENT_DECREASE = 1;
 
     /**
+     * Beautifier::MATCH_INDENT_INCREASE
+     *
      * HTML Element Indent Increase
      *
      * @var int
@@ -58,6 +68,8 @@ class Beautifier
     const MATCH_INDENT_INCREASE = 2;
 
     /**
+     * Beautifier::MATCH_DISCARD
+     *
      * HTML Element Indent Discard
      *
      * @var int
@@ -65,6 +77,8 @@ class Beautifier
     const MATCH_DISCARD = 3;
 
     /**
+     * Beautifier::$indentCharacter
+     *
      * Indentation Character
      *
      * @var string
@@ -72,6 +86,8 @@ class Beautifier
     private $indentCharacter = '    ';
 
     /**
+     * Beautifier::$inlineElements
+     *
      * Inline Elements
      *
      * @var array
@@ -104,7 +120,7 @@ class Beautifier
     // ------------------------------------------------------------------------
 
     /**
-     * FormatOutput::setElementType
+     * Beautifier::setElementType
      *
      * @param string $elementName
      * @param int    $type FormatOutput::ELEMENT_TYPE_BLOCK | FormatOutput::ELEMENT_TYPE_INLINE
@@ -127,7 +143,7 @@ class Beautifier
     // ------------------------------------------------------------------------
 
     /**
-     * FormatOutput::format
+     * Beautifier::format
      *
      * @param $source
      *
