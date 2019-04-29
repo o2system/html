@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the O2System PHP Framework package.
+ * This file is part of the O2System Framework package.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,8 +15,8 @@ namespace O2System\Html\Element;
 
 // ------------------------------------------------------------------------
 
-use O2System\Psr\Patterns\Structural\Composite\RenderableInterface;
-use O2System\Psr\Patterns\Structural\Repository\AbstractRepository;
+use O2System\Spl\Patterns\Structural\Composite\RenderableInterface;
+use O2System\Spl\Patterns\Structural\Repository\AbstractRepository;
 
 /**
  * Class Attributes
@@ -25,6 +25,13 @@ use O2System\Psr\Patterns\Structural\Repository\AbstractRepository;
  */
 class Attributes extends AbstractRepository implements RenderableInterface
 {
+    /**
+     * Attributes::setAttributeId
+     *
+     * @param string $id
+     *
+     * @return static
+     */
     public function setAttributeId($id)
     {
         $this->addAttribute('id', $id);
@@ -32,6 +39,16 @@ class Attributes extends AbstractRepository implements RenderableInterface
         return $this;
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::addAttribute
+     *
+     * @param string $name
+     * @param string $value
+     *
+     * @return static
+     */
     public function addAttribute($name, $value)
     {
         if ($name === 'class') {
@@ -59,6 +76,13 @@ class Attributes extends AbstractRepository implements RenderableInterface
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Attributes::addAttributeClass
+     *
+     * @param array|string $classes
+     *
+     * @return static
+     */
     public function addAttributeClass($classes)
     {
         if (is_string($classes)) {
@@ -75,118 +99,20 @@ class Attributes extends AbstractRepository implements RenderableInterface
         $this->storage[ 'class' ] = array_merge($this->storage[ 'class' ], $classes);
         $this->storage[ 'class' ] = array_unique($this->storage[ 'class' ]);
 
-        return $this;
-    }
-
-    // ------------------------------------------------------------------------
-
-    public function addAttributeStyle($styles, $value = null)
-    {
-        if (is_string($styles)) {
-            $styles = [$styles => $value];
+        if (in_array('disabled', $this->storage[ 'class' ])) {
+            $this->removeAttributeClass('active');
         }
-
-        if ( ! $this->offsetExists('style')) {
-            $this->storage[ 'style' ] = [];
-        }
-
-        foreach ($styles as $key => $value) {
-            if (empty($value)) {
-                continue;
-            }
-            $styles[ trim($key) ] = trim($value);
-        }
-
-        $this->storage[ 'style' ] = array_merge($this->storage[ 'style' ], $styles);
 
         return $this;
     }
 
     // ------------------------------------------------------------------------
 
-    public function hasAttribute($name)
-    {
-        if ($name === 'id') {
-            return empty($this->storage[ 'id' ]) ? false : true;
-        } elseif ($name === 'class') {
-            return empty($this->storage[ 'class' ]) ? false : true;
-        } else {
-            return isset($this->storage[ $name ]);
-        }
-    }
-
-    // ------------------------------------------------------------------------
-
-    public function getAttribute($name = null)
-    {
-        if (empty($name)) {
-            return $this->storage;
-        } elseif (isset($this->storage[ $name ])) {
-            return $this->storage[ $name ];
-        }
-
-        return false;
-    }
-
-    public function removeAttribute($attributes)
-    {
-        if (is_string($attributes)) {
-            $attributes = explode(',', $attributes);
-        }
-
-        $attributes = array_map('trim', $attributes);
-        $attributes = array_filter($attributes);
-
-        foreach ($attributes as $attribute) {
-            if (array_key_exists($attribute, $this->storage)) {
-                unset($this->storage[ $attribute ]);
-            } elseif (strpos($attribute, '*') !== false) {
-                $attribute = str_replace('*', '', $attribute);
-                foreach ($this->storage as $key => $value) {
-                    if (preg_match("/\b$attribute\b/i", $key)) {
-                        unset($this->storage[ $key ]);
-                    }
-                }
-            }
-        }
-    }
-
-    // ------------------------------------------------------------------------
-
-    public function getAttributeId()
-    {
-        if ($this->hasAttributeId()) {
-            return $this->storage[ 'id' ];
-        }
-
-        return false;
-    }
-
-    // ------------------------------------------------------------------------
-
-    public function hasAttributeId()
-    {
-        return (bool)empty($this->storage[ 'id' ]) ? false : true;
-    }
-
-    public function hasAttributeClass($className)
-    {
-        if ( ! $this->offsetExists('class')) {
-            $this->storage[ 'class' ] = [];
-        }
-
-        return in_array($className, $this->storage[ 'class' ]);
-    }
-
-    public function getAttributeClass()
-    {
-        if ( ! $this->offsetExists('class')) {
-            $this->storage[ 'class' ] = [];
-        }
-
-        return implode(', ', $this->storage[ 'class' ]);
-    }
-
+    /**
+     * Attributes::removeAttributeClass
+     *
+     * @param array|string $classes
+     */
     public function removeAttributeClass($classes)
     {
         if ($this->offsetExists('class')) {
@@ -216,6 +142,178 @@ class Attributes extends AbstractRepository implements RenderableInterface
         }
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::addAttributeStyle
+     *
+     * @param string|array  $styles
+     * @param string|null   $value
+     *
+     * @return static
+     */
+    public function addAttributeStyle($styles, $value = null)
+    {
+        if (is_string($styles)) {
+            $styles = [$styles => $value];
+        }
+
+        if ( ! $this->offsetExists('style')) {
+            $this->storage[ 'style' ] = [];
+        }
+
+        foreach ($styles as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
+            $styles[ trim($key) ] = trim($value);
+        }
+
+        $this->storage[ 'style' ] = array_merge($this->storage[ 'style' ], $styles);
+
+        return $this;
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::hasAttribute
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasAttribute($name)
+    {
+        if ($name === 'id') {
+            return empty($this->storage[ 'id' ]) ? false : true;
+        } elseif ($name === 'class') {
+            return empty($this->storage[ 'class' ]) ? false : true;
+        } else {
+            return isset($this->storage[ $name ]);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::getAttribute
+     *
+     * @param string|null $name
+     *
+     * @return array|bool
+     */
+    public function getAttribute($name = null)
+    {
+        if (empty($name)) {
+            return $this->storage;
+        } elseif (isset($this->storage[ $name ])) {
+            return $this->storage[ $name ];
+        }
+
+        return false;
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::removeAttribute
+     *
+     * @param string|array $attributes
+     */
+    public function removeAttribute($attributes)
+    {
+        if (is_string($attributes)) {
+            $attributes = explode(',', $attributes);
+        }
+
+        $attributes = array_map('trim', $attributes);
+        $attributes = array_filter($attributes);
+
+        foreach ($attributes as $attribute) {
+            if (array_key_exists($attribute, $this->storage)) {
+                unset($this->storage[ $attribute ]);
+            } elseif (strpos($attribute, '*') !== false) {
+                $attribute = str_replace('*', '', $attribute);
+                foreach ($this->storage as $key => $value) {
+                    if (preg_match("/\b$attribute\b/i", $key)) {
+                        unset($this->storage[ $key ]);
+                    }
+                }
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::getAttributeId
+     *
+     * @return bool
+     */
+    public function getAttributeId()
+    {
+        if ($this->hasAttributeId()) {
+            return $this->storage[ 'id' ];
+        }
+
+        return false;
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::hasAttributeId
+     *
+     * @return bool
+     */
+    public function hasAttributeId()
+    {
+        return (bool)empty($this->storage[ 'id' ]) ? false : true;
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::hasAttributeClass
+     *
+     * @param string $className
+     *
+     * @return bool
+     */
+    public function hasAttributeClass($className)
+    {
+        if ( ! $this->offsetExists('class')) {
+            $this->storage[ 'class' ] = [];
+        }
+
+        return in_array($className, $this->storage[ 'class' ]);
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::getAttributeClass
+     *
+     * @return string
+     */
+    public function getAttributeClass()
+    {
+        if ( ! $this->offsetExists('class')) {
+            $this->storage[ 'class' ] = [];
+        }
+
+        return implode(', ', $this->storage[ 'class' ]);
+    }
+
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::replaceAttributeClass
+     *
+     * @param string $class
+     * @param string $replace
+     */
     public function replaceAttributeClass($class, $replace)
     {
         if ($this->offsetExists('class')) {
@@ -231,6 +329,15 @@ class Attributes extends AbstractRepository implements RenderableInterface
         }
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::findAttributeClass
+     *
+     * @param string $class
+     *
+     * @return array|bool
+     */
     public function findAttributeClass($class)
     {
         if ($this->offsetExists('class')) {
@@ -251,11 +358,27 @@ class Attributes extends AbstractRepository implements RenderableInterface
         return false;
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::__toString
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->render();
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Attributes::render
+     *
+     * @param array $options
+     *
+     * @return string
+     */
     public function render(array $options = [])
     {
         $output = '';

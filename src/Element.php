@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the O2System PHP Framework package.
+ * This file is part of the O2System Framework package.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -29,13 +29,56 @@ use O2System\Spl\Iterators\ArrayIterator;
  */
 class Element
 {
+    /**
+     * Element::$tagName
+     *
+     * @var string
+     */
     public $tagName;
+
+    /**
+     * Element::$entity
+     *
+     * @var \O2System\Html\Element\Entity
+     */
     public $entity;
+
+    /**
+     * Element::$attributes
+     *
+     * @var \O2System\Html\Element\Attributes
+     */
     public $attributes;
+
+    /**
+     * Element::$textContent
+     *
+     * @var \O2System\Html\Element\TextContent
+     */
     public $textContent;
+
+    /**
+     * Element::$childNodes
+     *
+     * @var \O2System\Html\Element\Nodes
+     */
     public $childNodes;
+
+    /**
+     * Element::$metadata
+     *
+     * @var \O2System\Html\Element\Metadata
+     */
     public $metadata;
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Element::__construct
+     *
+     * @param string      $tagName
+     * @param string|null $entityName
+     */
     public function __construct($tagName, $entityName = null)
     {
         $this->tagName = trim($tagName);
@@ -49,6 +92,14 @@ class Element
         $this->metadata = new Metadata();
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Element::__clone
+     *
+     * @return \O2System\Html\Element
+     * @throws \ReflectionException
+     */
     public function __clone()
     {
         $newElement = $this;
@@ -72,11 +123,25 @@ class Element
         return $newElement;
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Element::__toString
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->render();
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Element::render
+     *
+     * @return string
+     */
     public function render()
     {
         $selfClosingTags = [
@@ -130,15 +195,22 @@ class Element
         return implode('', $output);
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Element::hasAttributes
+     *
+     * @return bool
+     */
     public function hasAttributes()
     {
         return (bool)($this->attributes->count() == 0 ? false : true);
     }
 
+    // ------------------------------------------------------------------------
+
     /**
-     * Tag Open Method
-     *
-     * @access public
+     * Element::open
      *
      * @return string
      */
@@ -156,20 +228,32 @@ class Element
 
     // ------------------------------------------------------------------------
 
+    /**
+     * Element::hasTextContent
+     *
+     * @return bool
+     */
     public function hasTextContent()
     {
         return (bool)($this->textContent->count() == 0 ? false : true);
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * Element::hasChildNodes
+     *
+     * @return bool
+     */
     public function hasChildNodes()
     {
         return (bool)($this->childNodes->count() == 0 ? false : true);
     }
 
+    // ------------------------------------------------------------------------
+
     /**
-     * Tag Close Method
-     *
-     * @access public
+     * Element::close
      *
      * @return string
      */

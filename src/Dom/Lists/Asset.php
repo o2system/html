@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the O2System PHP Framework package.
+ * This file is part of the O2System Framework package.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,14 +19,24 @@ use O2System\Html\Document;
 use O2System\Html\Dom\Element;
 
 /**
- * Class Meta
+ * Class Asset
  *
  * @package O2System\HTML\DOM\Lists
  */
 class Asset extends \ArrayIterator
 {
+    /**
+     * Asset::$element
+     *
+     * @var string
+     */
     public $element = 'link';
 
+    /**
+     * Asset::$ownerDocument
+     *
+     * @var \O2System\Html\Document
+     */
     public $ownerDocument;
 
     // ------------------------------------------------------------------------
@@ -86,18 +96,21 @@ class Asset extends \ArrayIterator
     /**
      * Asset::createElement
      *
-     * @param string $name
-     * @param string $value
+     * @param array $attributes
      *
      * @return \DOMElement
      */
-    public function createElement($name, $value)
+    public function createElement(array $attributes)
     {
-        $meta = $this->ownerDocument->createElement($this->element);
-        $meta->setAttribute($name, $value);
+        $element = $this->ownerDocument->createElement($this->element);
 
-        parent::offsetSet($name, $meta);
+        $name = null;
+        foreach ($attributes as $key => $value) {
+            $element->setAttribute($key, $value);
+        }
 
-        return $meta;
+        $this[] = $element;
+
+        return $element;
     }
 }

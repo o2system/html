@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the O2System PHP Framework package.
+ * This file is part of the O2System Framework package.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,6 +26,8 @@ use O2System\Spl\Exceptions\Logic\InvalidArgumentException;
 class Element extends \DOMElement
 {
     /**
+     * Element::__get
+     *
      * Returns the value for the property specified
      *
      * @param string $name The name of the property
@@ -53,12 +55,15 @@ class Element extends \DOMElement
     // ------------------------------------------------------------------------
 
     /**
+     * Element::__set
+     *
      * Sets the value for the property specified
      *
      * @param string $name
      * @param string $value
      *
      * @throws \InvalidArgumentException
+     * @throws \O2System\Spl\Exceptions\Logic\InvalidArgumentException
      */
     public function __set($name, $value)
     {
@@ -112,6 +117,8 @@ class Element extends \DOMElement
         return $this;
     }
 
+    // ------------------------------------------------------------------------
+
     /**
      * Element::getAttributes
      *
@@ -146,6 +153,8 @@ class Element extends \DOMElement
     // ------------------------------------------------------------------------
 
     /**
+     * Element::__toString
+     *
      * Returns the element outerHTML
      *
      * @return string The element outerHTML
@@ -158,7 +167,7 @@ class Element extends \DOMElement
     // ------------------------------------------------------------------------
 
     /**
-     * Element::empty
+     * Element::clear
      *
      * @return void
      */
