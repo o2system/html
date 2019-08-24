@@ -15,11 +15,6 @@ namespace O2System\Html;
 
 // ------------------------------------------------------------------------
 
-use O2System\Html\Element\Attributes;
-use O2System\Html\Element\Entity;
-use O2System\Html\Element\Metadata;
-use O2System\Html\Element\Nodes;
-use O2System\Html\Element\TextContent;
 use O2System\Spl\Iterators\ArrayIterator;
 
 /**
@@ -46,7 +41,7 @@ class Element
     /**
      * Element::$attributes
      *
-     * @var \O2System\Html\Element\Attributes
+     * @var \O2System\Html\Element\Attribute
      */
     public $attributes;
 
@@ -83,13 +78,13 @@ class Element
     {
         $this->tagName = trim($tagName);
 
-        $this->entity = new Entity();
+        $this->entity = new Element\Entity();
         $this->entity->setEntityName($entityName);
 
-        $this->attributes = new Attributes();
-        $this->textContent = new TextContent();
-        $this->childNodes = new Nodes();
-        $this->metadata = new Metadata();
+        $this->attributes = new Element\Attributes();
+        $this->textContent = new Element\TextContent();
+        $this->childNodes = new Element\Nodes();
+        $this->metadata = new Element\Metadata();
     }
 
     // ------------------------------------------------------------------------

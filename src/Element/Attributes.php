@@ -389,7 +389,7 @@ class Attributes extends AbstractRepository implements RenderableInterface
                 switch ($key) {
                     case 'style':
                         if (count($value) == 0) {
-                            continue;
+                            continue 2;
                         }
 
                         $output .= 'style="';
@@ -401,7 +401,7 @@ class Attributes extends AbstractRepository implements RenderableInterface
                         break;
                     case 'class':
                         if (count($value) == 0) {
-                            continue;
+                            continue 2;
                         }
                         $output .= ' ' . $key . '="' . implode(' ', $value) . '"';
                         break;
@@ -411,7 +411,7 @@ class Attributes extends AbstractRepository implements RenderableInterface
                     default:
                         if (is_array($value)) {
                             if (count($value) == 0) {
-                                continue;
+                                continue 2;
                             }
                             $value = implode(', ', $value);
                         }
