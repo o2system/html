@@ -121,7 +121,9 @@ class Nodes extends ArrayIterator
      */
     public function item($index)
     {
-        return $this->offsetGet($index);
+        if($this->offsetExists($index)) {
+            return $this->offsetGet($index);
+        }
     }
 
     // ------------------------------------------------------------------------
