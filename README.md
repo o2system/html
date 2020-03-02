@@ -1,4 +1,4 @@
-![alt text](https://www.o2system.id/assets/img/covers/cover-o2system-atom-html.png "O2System HTML Atom")
+![alt text](https://repository-images.githubusercontent.com/68261077/770ab500-5c9e-11ea-9d63-1cac90583bb1 "O2System HTML Atom")
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/o2system/html/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/o2system/html/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/o2system/html/badges/build.png?b=master)](https://scrutinizer-ci.com/g/o2system/html/build-status/master)
